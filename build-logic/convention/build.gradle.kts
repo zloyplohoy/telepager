@@ -23,6 +23,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("hilt") {
+            id = "telepager.hilt"
+            implementationClass = "HiltConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "telepager.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
