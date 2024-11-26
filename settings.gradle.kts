@@ -26,6 +26,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
 
+include(":core:concurrency")
 include(":core:designsystem")
 include(":core:model")
 include(":core:telegram")
