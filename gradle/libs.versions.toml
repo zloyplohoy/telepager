@@ -9,6 +9,7 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.11.00"
 # Build logic dependencies
+androidDesugaringJdk = "2.1.3"
 hilt = "2.52"
 ksp = "2.0.21-1.0.26"
 
@@ -28,6 +29,8 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 # Build logic dependencies
+android-desugaring-jdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugaringJdk" }
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -39,5 +42,6 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 # Build logic dependencies
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 # Convention plugins
+telepager-android-application = { id = "telepager.android.application" }
 telepager-jvm-library = { id = "telepager.jvm.library" }
 telepager-hilt = { id = "telepager.hilt" }
