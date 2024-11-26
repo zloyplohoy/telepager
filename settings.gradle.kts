@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Telepager"
 include(":app")
+include(":core:concurrency")
