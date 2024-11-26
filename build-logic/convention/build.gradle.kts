@@ -16,3 +16,16 @@ kotlin {
         jvmTarget = JvmTarget.JVM_17
     }
 }
+
+dependencies {
+    compileOnly(libs.kotlin.gradle.plugin)
+}
+
+gradlePlugin {
+    plugins {
+        register("jvmLibrary") {
+            id = "telepager.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
+    }
+}
