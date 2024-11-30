@@ -35,7 +35,7 @@ internal fun Project.configureKotlinAndroid(
     configureKotlin<KotlinAndroidProjectExtension>()
 
     dependencies {
-        add("coreLibraryDesugaring", libs.findLibrary("android.desugaring.jdk").get())
+        add("coreLibraryDesugaring", libs.findLibrary("android.desugar.jdk.libs").get())
     }
 }
 
@@ -50,6 +50,7 @@ internal fun Project.configureKotlinJvm() {
 
 private inline fun <reified T : KotlinTopLevelExtension> Project.configureKotlin() = configure<T> {
     val warningsAsErrors: String? by project
+
     when (this) {
         is KotlinAndroidProjectExtension -> compilerOptions
         is KotlinJvmProjectExtension -> compilerOptions

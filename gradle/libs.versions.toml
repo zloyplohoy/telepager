@@ -1,53 +1,69 @@
 [versions]
-agp = "8.7.2"
-kotlin = "2.0.21"
-coreKtx = "1.15.0"
-lifecycleRuntime = "2.8.7"
 activityCompose = "1.9.3"
+androidDesugarJdkLibs = "2.1.3"
+androidGradlePlugin = "8.7.2"
 composeBom = "2024.11.00"
-androidxNavigation = "2.8.4"
-# Build logic dependencies
-androidDesugaringJdk = "2.1.3"
+composeNavigation = "2.8.4"
+coreKtx = "1.15.0"
 hilt = "2.52"
-ksp = "2.0.21-1.0.26"
+kotlin = "2.0.21"
+kotlinSymbolProcessing = "2.0.21-1.0.26"
 kotlinxSerializationJson = "1.7.3"
+lifecycleRuntime = "2.8.7"
+
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "lifecycleRuntime" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+# Compose navigation
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+
+# Build logic essentials
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+compose-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Build logic: Android application convention plugin, Android library convention plugin
+android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+
+# Build logic: Android application Compose convention plugin, Android library Compose convention plugin
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-# Build logic dependencies
-android-desugaring-jdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugaringJdk" }
-android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
-androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
-androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
-compose-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
+# Build logic: Hilt convention plugin
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Build logic: Android feature convention plugin
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
+# Feature: Design system
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+
+
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+# Compose navigation
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-# Build logic dependencies
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+# Build logic: Hilt convention plugin
+ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinSymbolProcessing" }
+
 # Convention plugins
 telepager-android-application = { id = "telepager.android.application" }
 telepager-android-application-compose = { id = "telepager.android.application.compose" }
 telepager-android-feature = { id = "telepager.android.feature" }
 telepager-android-library = { id = "telepager.android.library" }
 telepager-android-library-compose = { id = "telepager.android.library.compose" }
-telepager-jvm-library = { id = "telepager.jvm.library" }
 telepager-hilt = { id = "telepager.hilt" }
+telepager-jvm-library = { id = "telepager.jvm.library" }
