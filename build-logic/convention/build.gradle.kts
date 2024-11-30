@@ -33,6 +33,14 @@ gradlePlugin {
             id = "telepager.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("androidFeature") {
+            id = "telepager.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
+        register("androidLibrary") {
+            id = "telepager.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
         register("androidLibraryCompose") {
             id = "telepager.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
