@@ -6,10 +6,13 @@ composeBom = "2024.11.00"
 composeNavigation = "2.8.4"
 coreKtx = "1.15.0"
 hilt = "2.52"
+hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.21"
 kotlinSymbolProcessing = "2.0.21-1.0.26"
 kotlinxSerializationJson = "1.7.3"
 lifecycleRuntime = "2.8.7"
+okhttp = "4.12.0"
+retrofit = "2.11.0"
 
 
 
@@ -40,7 +43,15 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 
 # Build logic: Android feature convention plugin
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+# Build logic: Android feature convention plugin; Module: :core:telegram
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+# Module: :core:telegram
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 
 # Feature: Design system
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }

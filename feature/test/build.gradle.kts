@@ -6,3 +6,8 @@ plugins {
 android {
     namespace = "ag.sokolov.telepager.feature.test"
 }
+
+dependencies{
+    implementation(projects.core.model)
+    implementation(projects.core.telegram)
+}
