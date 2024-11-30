@@ -19,6 +19,7 @@ kotlin {
 
 dependencies {
     compileOnly(libs.android.gradle.plugin)
+    compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
 }
 
@@ -27,6 +28,10 @@ gradlePlugin {
         register("androidApplication") {
             id = "telepager.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidApplicationCompose") {
+            id = "telepager.android.application.compose"
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("hilt") {
             id = "telepager.hilt"
