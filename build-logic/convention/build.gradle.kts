@@ -33,6 +33,10 @@ gradlePlugin {
             id = "telepager.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("androidLibraryCompose") {
+            id = "telepager.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
         register("hilt") {
             id = "telepager.hilt"
             implementationClass = "HiltConventionPlugin"

@@ -39,5 +39,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 # Convention plugins
 telepager-android-application = { id = "telepager.android.application" }
 telepager-android-application-compose = { id = "telepager.android.application.compose" }
+telepager-android-library-compose = { id = "telepager.android.library.compose" }
 telepager-jvm-library = { id = "telepager.jvm.library" }
 telepager-hilt = { id = "telepager.hilt" }
