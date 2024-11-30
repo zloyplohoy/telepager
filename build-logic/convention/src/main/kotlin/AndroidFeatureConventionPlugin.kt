@@ -11,13 +11,19 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             pluginManager.apply {
                 apply("telepager.android.library")
                 apply("telepager.hilt")
+                apply("org.jetbrains.kotlin.plugin.serialization")
             }
+
             extensions.configure<LibraryExtension> {
                 testOptions.animationsDisabled = true
             }
 
             dependencies {
+                add("implementation", project(":core:designsystem"))
+
+                add("implementation", libs.findLibrary("androidx.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtime").get())
+                add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
             }
         }
     }
