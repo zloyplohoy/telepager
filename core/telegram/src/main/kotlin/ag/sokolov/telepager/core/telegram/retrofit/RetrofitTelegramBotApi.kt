@@ -4,6 +4,7 @@ import ag.sokolov.telepager.core.telegram.retrofit.dto.MessageDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
+import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -16,7 +17,7 @@ interface RetrofitTelegramBotApi {
     @GET("/bot{token}/getMe")
     suspend fun getMe(
         @Path("token") token: String,
-    ): ResponseDto<UserDto>
+    ): Response<ResponseDto<UserDto>>
 
     // https://core.telegram.org/bots/api#getchat
     @GET("/bot{token}/getChat")

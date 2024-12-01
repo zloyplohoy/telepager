@@ -1,6 +1,6 @@
 package ag.sokolov.telepager.feature.test
 
-import ag.sokolov.telepager.core.model.TelegramBotInfo
+import ag.sokolov.telepager.core.model.BotDetails
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -95,7 +95,8 @@ internal fun TestScreen(
 private fun PreviewTestScreen() {
     TestScreen(
         uiState = TestUiState(
-            botInfo = TelegramBotInfo(
+            botInfo = BotDetails(
+                id = 0,
                 name = "Mock bot",
                 username = "mockbot"
             )
@@ -107,6 +108,6 @@ private fun PreviewTestScreen() {
 
 data class TestUiState(
     val text: String = "Test",
-    val botInfo: TelegramBotInfo? = null,
+    val botInfo: BotDetails? = null,
     val error: String? = null,
 )

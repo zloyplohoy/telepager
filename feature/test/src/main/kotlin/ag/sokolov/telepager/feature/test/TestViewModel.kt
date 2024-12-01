@@ -31,11 +31,11 @@ class TestViewModel @Inject constructor(
                 }
 
                 is Failure -> {
-                    _uiState.value = _uiState.value.copy(error = "Request failed")
+                    _uiState.value = _uiState.value.copy(error = getBotResult.error.message)
                 }
 
                 else -> {
-                    _uiState.value = _uiState.value.copy(error = "Wait")
+                    _uiState.value = _uiState.value.copy(error = "Loading")
                 }
             }
         }
