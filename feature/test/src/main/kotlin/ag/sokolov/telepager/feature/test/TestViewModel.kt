@@ -21,7 +21,7 @@ class TestViewModel @Inject constructor(
     fun getBot(token: String) {
         viewModelScope.launch {
             val getBotResult =
-                telegramBotApi.getTelegramBot(token)
+                telegramBotApi.getBot(token)
             when (getBotResult) {
                 is Success -> {
                     _uiState.value = _uiState.value.copy(
@@ -44,7 +44,7 @@ class TestViewModel @Inject constructor(
     fun getUser(token: String, userId: Long) {
         viewModelScope.launch {
             val getUserResult =
-                telegramBotApi.getTelegramUser(token, userId)
+                telegramBotApi.getUser(token, userId)
             when (getUserResult) {
                 is Success -> {
                     _uiState.value = _uiState.value.copy(

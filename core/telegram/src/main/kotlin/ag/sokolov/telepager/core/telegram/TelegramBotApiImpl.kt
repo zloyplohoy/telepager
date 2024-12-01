@@ -37,7 +37,7 @@ internal class TelegramBotApiImpl @Inject constructor(
             .build()
             .create(RetrofitTelegramBotApi::class.java)
 
-    override suspend fun getTelegramBot(
+    override suspend fun getBot(
         apiToken: String,
     ): TelepagerResult<BotDetails, TelepagerError> =
         safeApiCall(
@@ -45,7 +45,7 @@ internal class TelegramBotApiImpl @Inject constructor(
             transform = { it.asBotDetails() }
         )
 
-    override suspend fun getTelegramUser(
+    override suspend fun getUser(
         apiToken: String,
         userId: Long,
     ): TelepagerResult<UserDetails, TelepagerError> =
