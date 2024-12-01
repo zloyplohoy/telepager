@@ -24,7 +24,7 @@ interface RetrofitTelegramBotApi {
     suspend fun getChat(
         @Path("token") token: String,
         @Query("chat_id") chatId: Long,
-    ): ResponseDto<UserDto>
+    ): Response<ResponseDto<UserDto>>
 
     // https://core.telegram.org/bots/api#getupdates
     @GET("/bot{token}/getUpdates")

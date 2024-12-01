@@ -8,10 +8,12 @@ import ag.sokolov.telepager.core.model.TelepagerError.UnknownError
 import ag.sokolov.telepager.core.model.TelepagerResult
 import ag.sokolov.telepager.core.model.TelepagerResult.Failure
 import ag.sokolov.telepager.core.model.TelepagerResult.Success
+import ag.sokolov.telepager.core.model.UserDetails
 import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.asBotDetails
+import ag.sokolov.telepager.core.telegram.retrofit.dto.asUserDetails
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
@@ -35,10 +37,21 @@ internal class TelegramBotApiImpl @Inject constructor(
             .build()
             .create(RetrofitTelegramBotApi::class.java)
 
-    override suspend fun getTelegramBot(apiToken: String): TelepagerResult<BotDetails, TelepagerError> =
+    override suspend fun getTelegramBot(
+        apiToken: String,
+    ): TelepagerResult<BotDetails, TelepagerError> =
         safeApiCall(
             apiCall = { botApi.getMe(apiToken) },
             transform = { it.asBotDetails() }
+        )
+
+    override suspend fun getTelegramUser(
+        apiToken: String,
+        userId: Long,
+    ): TelepagerResult<UserDetails, TelepagerError> =
+        safeApiCall(
+            apiCall = { botApi.getChat(apiToken, userId) },
+            transform = { it.asUserDetails() }
         )
 
     private suspend fun <T, R> safeApiCall(

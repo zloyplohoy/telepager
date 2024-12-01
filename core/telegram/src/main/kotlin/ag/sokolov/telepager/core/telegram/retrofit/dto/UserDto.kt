@@ -1,6 +1,7 @@
 package ag.sokolov.telepager.core.telegram.retrofit.dto
 
 import ag.sokolov.telepager.core.model.BotDetails
+import ag.sokolov.telepager.core.model.UserDetails
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,4 +20,12 @@ fun UserDto.asBotDetails(): BotDetails =
         id = id,
         name = firstName,
         username = username!!
+    )
+
+fun UserDto.asUserDetails(): UserDetails =
+    UserDetails(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        username = username
     )
