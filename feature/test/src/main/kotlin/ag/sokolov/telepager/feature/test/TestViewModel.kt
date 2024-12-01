@@ -63,4 +63,26 @@ class TestViewModel @Inject constructor(
             }
         }
     }
+
+    fun sendMessage(token: String, userId: Long, message: String) {
+        viewModelScope.launch {
+            val sendMessageResult =
+                telegramBotApi.sendMessage(token, userId, message)
+            when (sendMessageResult) {
+                is Success -> {
+                    _uiState.value = _uiState.value.copy(
+                        error = null
+                    )
+                }
+
+                is Failure -> {
+                    _uiState.value = _uiState.value.copy(error = sendMessageResult.error.message)
+                }
+
+                else -> {
+                    _uiState.value = _uiState.value.copy(error = "Loading")
+                }
+            }
+        }
+    }
 }

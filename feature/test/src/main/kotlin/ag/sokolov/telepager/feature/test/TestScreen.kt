@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,6 +34,7 @@ fun TestScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var token by remember { mutableStateOf("") }
     var userId by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf("") }
 
     fun onTokenValueChange(value: String) {
         token = value
@@ -45,14 +48,23 @@ fun TestScreen(
 
     fun getUser() = viewModel.getUser(token, userId.toLong())
 
+    fun onMessageValueChange(value: String) {
+        message = value
+    }
+
+    fun sendMessage() = viewModel.sendMessage(token, userId.toLong(), message)
+
     TestScreen(
         uiState = uiState,
         token = token,
         userId = userId,
+        message = message,
         onTokenValueChange = ::onTokenValueChange,
         onUserIdValueChange = ::onUserIdValueChange,
+        onMessageValueChange = ::onMessageValueChange,
         onGetBot = ::getBot,
         onGetUser = ::getUser,
+        onSendMessage = ::sendMessage,
         modifier = modifier
     )
 }
@@ -62,16 +74,21 @@ internal fun TestScreen(
     uiState: TestUiState,
     token: String = "",
     userId: String = "",
+    message: String = "",
     onTokenValueChange: (String) -> Unit = { TODO("Not implemented") },
     onUserIdValueChange: (String) -> Unit = { TODO("Not implemented") },
+    onMessageValueChange: (String) -> Unit = { TODO("Not implemented") },
     onGetBot: () -> Unit = { TODO("Not implemented") },
     onGetUser: () -> Unit = { TODO("Not implemented") },
+    onSendMessage: () -> Unit = { TODO("Not implemented") },
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier.fillMaxSize()
     ) {
-        Column {
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
             TextField(
                 value = token,
                 onValueChange = onTokenValueChange,
@@ -143,6 +160,18 @@ internal fun TestScreen(
                 label = { Text("User last name") },
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(64.dp))
+            TextField(
+                value = message,
+                onValueChange = onMessageValueChange,
+                label = { Text("Message") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Button(
+                onClick = onSendMessage
+            ) {
+                Text("Send message")
+            }
         }
     }
 }
