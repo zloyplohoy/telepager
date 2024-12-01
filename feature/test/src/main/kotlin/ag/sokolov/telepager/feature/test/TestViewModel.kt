@@ -40,4 +40,27 @@ class TestViewModel @Inject constructor(
             }
         }
     }
+
+    fun getUser(token: String, userId: Long) {
+        viewModelScope.launch {
+            val getUserResult =
+                telegramBotApi.getTelegramUser(token, userId)
+            when (getUserResult) {
+                is Success -> {
+                    _uiState.value = _uiState.value.copy(
+                        userInfo = getUserResult.data,
+                        error = null
+                    )
+                }
+
+                is Failure -> {
+                    _uiState.value = _uiState.value.copy(error = getUserResult.error.message)
+                }
+
+                else -> {
+                    _uiState.value = _uiState.value.copy(error = "Loading")
+                }
+            }
+        }
+    }
 }
