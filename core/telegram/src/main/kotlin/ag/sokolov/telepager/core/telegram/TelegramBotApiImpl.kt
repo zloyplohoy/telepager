@@ -54,6 +54,16 @@ internal class TelegramBotApiImpl @Inject constructor(
             transform = { it.asUserDetails() }
         )
 
+    override suspend fun sendMessage(
+        apiToken: String,
+        userId: Long,
+        text: String,
+    ): TelepagerResult<Unit, TelepagerError> =
+        safeApiCall(
+            apiCall = { botApi.sendMessage(apiToken, userId, text) },
+            transform = { it }
+        )
+
     private suspend fun <T, R> safeApiCall(
         apiCall: suspend () -> Response<ResponseDto<T>>,
         transform: (T) -> R,

@@ -1,6 +1,5 @@
 package ag.sokolov.telepager.core.telegram.retrofit
 
-import ag.sokolov.telepager.core.telegram.retrofit.dto.MessageDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
@@ -42,5 +41,5 @@ interface RetrofitTelegramBotApi {
         @Path("token") token: String,
         @Field("chat_id") chatId: Long,
         @Field("text") text: String,
-    ): ResponseDto<MessageDto>
+    ): Response<ResponseDto<Unit>>
 }
