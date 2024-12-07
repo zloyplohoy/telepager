@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.feature.test
+package ag.sokolov.telepager.feature.servicemenu
 
 import ag.sokolov.telepager.core.model.BotDetails
 import ag.sokolov.telepager.core.model.UserDetails
@@ -27,8 +27,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun TestScreen(
-    viewModel: TestViewModel = hiltViewModel(),
+fun ServiceMenuScreen(
+    viewModel: ServiceMenuViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,7 +54,7 @@ fun TestScreen(
 
     fun sendMessage() = viewModel.sendMessage(token, userId.toLong(), message)
 
-    TestScreen(
+    ServiceMenuScreen(
         uiState = uiState,
         token = token,
         userId = userId,
@@ -70,8 +70,8 @@ fun TestScreen(
 }
 
 @Composable
-internal fun TestScreen(
-    uiState: TestUiState,
+internal fun ServiceMenuScreen(
+    uiState: ServiceMenuUiState,
     token: String = "",
     userId: String = "",
     message: String = "",
@@ -179,8 +179,8 @@ internal fun TestScreen(
 @Preview
 @Composable
 private fun PreviewTestScreen() {
-    TestScreen(
-        uiState = TestUiState(
+    ServiceMenuScreen(
+        uiState = ServiceMenuUiState(
             botInfo = BotDetails(
                 id = 0,
                 name = "Mock bot",
@@ -190,7 +190,7 @@ private fun PreviewTestScreen() {
     )
 }
 
-data class TestUiState(
+data class ServiceMenuUiState(
     val text: String = "Test",
     val botInfo: BotDetails? = null,
     val userInfo: UserDetails? = null,

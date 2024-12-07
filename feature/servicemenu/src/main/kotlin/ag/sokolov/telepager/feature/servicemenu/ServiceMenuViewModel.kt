@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.feature.test
+package ag.sokolov.telepager.feature.servicemenu
 
 import ag.sokolov.telepager.core.model.TelepagerResult.Failure
 import ag.sokolov.telepager.core.model.TelepagerResult.Success
@@ -12,11 +12,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TestViewModel @Inject constructor(
+class ServiceMenuViewModel @Inject constructor(
     private val telegramBotApi: TelegramBotApi,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(TestUiState())
-    val uiState: StateFlow<TestUiState> = _uiState
+    private val _uiState = MutableStateFlow(ServiceMenuUiState())
+    val uiState: StateFlow<ServiceMenuUiState> = _uiState
 
     fun getBot(token: String) {
         viewModelScope.launch {

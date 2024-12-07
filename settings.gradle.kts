@@ -32,4 +32,4 @@ include(":core:designsystem")
 include(":core:model")
 include(":core:telegram")
 
-include(":feature:test")
+include(":feature:servicemenu")

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ag.sokolov.telepager.feature.test"
+    namespace = "ag.sokolov.telepager.feature.servicemenu"
 }
 
 dependencies{
