@@ -23,12 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun ServiceMenuScreen(
-    viewModel: ServiceMenuViewModel = hiltViewModel(),
+fun LegacyServiceMenuScreen(
+    viewModel: ServiceMenuViewModel,
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,7 +53,7 @@ fun ServiceMenuScreen(
 
     fun sendMessage() = viewModel.sendMessage(token, userId.toLong(), message)
 
-    ServiceMenuScreen(
+    LegacyServiceMenuScreen(
         uiState = uiState,
         token = token,
         userId = userId,
@@ -70,7 +69,7 @@ fun ServiceMenuScreen(
 }
 
 @Composable
-internal fun ServiceMenuScreen(
+internal fun LegacyServiceMenuScreen(
     uiState: ServiceMenuUiState,
     token: String = "",
     userId: String = "",
@@ -178,8 +177,8 @@ internal fun ServiceMenuScreen(
 
 @Preview
 @Composable
-private fun PreviewTestScreen() {
-    ServiceMenuScreen(
+private fun PreviewLegacyServiceMenuScreen() {
+    LegacyServiceMenuScreen(
         uiState = ServiceMenuUiState(
             botInfo = BotDetails(
                 id = 0,

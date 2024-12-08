@@ -1,7 +1,7 @@
 package ag.sokolov.telepager.navigation
 
-import ag.sokolov.telepager.feature.servicemenu.navigation.ServiceMenuRoute
-import ag.sokolov.telepager.feature.servicemenu.navigation.serviceMenuScreen
+import ag.sokolov.telepager.feature.servicemenu.navigation.ServiceMenu
+import ag.sokolov.telepager.feature.servicemenu.navigation.serviceMenuFeature
 import ag.sokolov.telepager.ui.TelepagerAppState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,9 +17,9 @@ fun TelepagerNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = ServiceMenuRoute,
+        startDestination = ServiceMenu,
         modifier = modifier
     ) {
-        serviceMenuScreen()
+        serviceMenuFeature(navController)
     }
 }
