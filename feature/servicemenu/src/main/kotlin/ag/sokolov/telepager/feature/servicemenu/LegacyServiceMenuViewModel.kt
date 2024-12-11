@@ -3,6 +3,8 @@ package ag.sokolov.telepager.feature.servicemenu
 import ag.sokolov.telepager.core.model.TelepagerResult.Failure
 import ag.sokolov.telepager.core.model.TelepagerResult.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
+import ag.sokolov.telepager.feature.servicemenu.bot.BotServiceMenuAction
+import ag.sokolov.telepager.feature.servicemenu.bot.BotServiceMenuState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ServiceMenuViewModel @Inject constructor(
+class LegacyServiceMenuViewModel @Inject constructor(
     private val telegramBotApi: TelegramBotApi,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ServiceMenuUiState())

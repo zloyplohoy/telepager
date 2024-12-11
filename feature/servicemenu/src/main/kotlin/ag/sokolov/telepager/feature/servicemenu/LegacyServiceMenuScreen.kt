@@ -23,12 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun LegacyServiceMenuScreen(
-    viewModel: ServiceMenuViewModel,
-    modifier: Modifier = Modifier,
+    viewModel: LegacyServiceMenuViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var token by remember { mutableStateOf("") }
@@ -63,8 +63,7 @@ fun LegacyServiceMenuScreen(
         onMessageValueChange = ::onMessageValueChange,
         onGetBot = ::getBot,
         onGetUser = ::getUser,
-        onSendMessage = ::sendMessage,
-        modifier = modifier
+        onSendMessage = ::sendMessage
     )
 }
 
@@ -80,10 +79,9 @@ internal fun LegacyServiceMenuScreen(
     onGetBot: () -> Unit = { TODO("Not implemented") },
     onGetUser: () -> Unit = { TODO("Not implemented") },
     onSendMessage: () -> Unit = { TODO("Not implemented") },
-    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
