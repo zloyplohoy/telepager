@@ -22,7 +22,7 @@ class BotServiceMenuViewModel @Inject constructor(
     fun getBot() {
         viewModelScope.launch {
             val getBotResult =
-                telegramBotApi.getBot(uiState.value.botToken)
+                telegramBotApi.getBot(_uiState.value.botToken)
             when (getBotResult) {
                 is Success -> {
                     _uiState.value = _uiState.value.copy(
