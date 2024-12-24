@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.filled.Message
-import androidx.compose.material.icons.filled.AutoDelete
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Token
 import androidx.compose.material3.Icon
@@ -22,7 +20,6 @@ fun ServiceMenuRootScreen(
     navigateToBotDetailsServiceMenu: () -> Unit = {},
     navigateToRecipientServiceMenu: () -> Unit = {},
     navigateToMessagesServiceMenu: () -> Unit = {},
-    navigateToLegacyServiceMenu: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Column {
@@ -45,11 +42,6 @@ fun ServiceMenuRootScreen(
             leadingContent = { Icon(Icons.AutoMirrored.Filled.Message, null) },
             headlineContent = { Text("Messages") },
             modifier = Modifier.clickable { navigateToMessagesServiceMenu() }
-        )
-        ListItem(
-            leadingContent = { Icon(Icons.Filled.AutoDelete, null) },
-            headlineContent = { Text("Legacy") },
-            modifier = Modifier.clickable { navigateToLegacyServiceMenu() }
         )
     }
 }
