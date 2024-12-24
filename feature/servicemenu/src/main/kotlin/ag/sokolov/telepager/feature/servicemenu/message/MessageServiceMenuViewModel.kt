@@ -1,7 +1,7 @@
 package ag.sokolov.telepager.feature.servicemenu.message
 
-import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.result.Result.Failure
+import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,7 +34,8 @@ class MessageServiceMenuViewModel @Inject constructor(
                     }
 
                     is Failure -> {
-                        _uiState.value = _uiState.value.copy(error = getUserResult.error.message)
+                        _uiState.value =
+                            _uiState.value.copy(error = getUserResult.error.javaClass.toString())
                     }
 
                     else -> {}

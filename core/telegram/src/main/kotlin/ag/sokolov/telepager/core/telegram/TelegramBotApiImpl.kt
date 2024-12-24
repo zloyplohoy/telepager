@@ -1,14 +1,15 @@
 package ag.sokolov.telepager.core.telegram
 
 import ag.sokolov.telepager.core.model.BotDetails
-import ag.sokolov.telepager.core.model.TelepagerError
-import ag.sokolov.telepager.core.model.TelepagerError.BotError
-import ag.sokolov.telepager.core.model.TelepagerError.NetworkError
-import ag.sokolov.telepager.core.model.TelepagerError.UnknownError
 import ag.sokolov.telepager.core.model.UserDetails
 import ag.sokolov.telepager.core.result.Result
 import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
+import ag.sokolov.telepager.core.telegram.TelegramBotApiError.BadRequest
+import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Forbidden
+import ag.sokolov.telepager.core.telegram.TelegramBotApiError.NetworkError
+import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
+import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
 import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
@@ -39,7 +40,7 @@ internal class TelegramBotApiImpl @Inject constructor(
 
     override suspend fun getBot(
         apiToken: String,
-    ): Result<BotDetails, TelepagerError> =
+    ): Result<BotDetails, TelegramBotApiError> =
         safeApiCall(
             apiCall = { botApi.getMe(apiToken) },
             transform = { it.asBotDetails() }
@@ -48,7 +49,7 @@ internal class TelegramBotApiImpl @Inject constructor(
     override suspend fun getUser(
         apiToken: String,
         userId: Long,
-    ): Result<UserDetails, TelepagerError> =
+    ): Result<UserDetails, TelegramBotApiError> =
         safeApiCall(
             apiCall = { botApi.getChat(apiToken, userId) },
             transform = { it.asUserDetails() }
@@ -58,7 +59,7 @@ internal class TelegramBotApiImpl @Inject constructor(
         apiToken: String,
         userId: Long,
         text: String,
-    ): Result<Unit, TelepagerError> =
+    ): Result<Unit, TelegramBotApiError> =
         safeApiCall(
             apiCall = { botApi.sendMessage(apiToken, userId, text) },
             transform = { it }
@@ -67,17 +68,13 @@ internal class TelegramBotApiImpl @Inject constructor(
     private suspend fun <T, R> safeApiCall(
         apiCall: suspend () -> Response<ResponseDto<T>>,
         transform: (T) -> R,
-    ): Result<R, TelepagerError> =
+    ): Result<R, TelegramBotApiError> =
         try {
             val response = apiCall()
             if (response.isSuccessful) {
                 Success(transform(response.body()!!.result))
             } else {
-                val errorBody = response.errorBody()?.string()
-                val error = parseApiErrorBody(errorBody)
-                error?.let {
-                    Failure(BotError(it.description))
-                } ?: Failure(UnknownError("Unknown Telegram API error"))
+                Failure(getTelegramApiError<T>(response))
             }
         } catch (e: IOException) {
             Failure(NetworkError(e.localizedMessage))
@@ -85,10 +82,23 @@ internal class TelegramBotApiImpl @Inject constructor(
             Failure(UnknownError(e.localizedMessage))
         }
 
-    private fun parseApiErrorBody(errorBody: String?): ErrorDto? =
+    private fun <T> getTelegramApiError(response: Response<ResponseDto<T>>): TelegramBotApiError =
         try {
-            errorBody?.let { json.decodeFromString<ErrorDto>(it) }
+            val errorDto = json.decodeFromString<ErrorDto>(response.errorBody()!!.string())
+            when (response.code()) {
+                401 -> Unauthorized
+                403 -> Forbidden.BotBlocked
+                400 -> {
+                    when (errorDto.description) {
+                        "Bad Request: chat not found" -> BadRequest.ChatNotFound
+                        "Bad Request: message text is empty" -> BadRequest.MessageTextIsEmpty
+                        else -> UnknownError(errorDto.description)
+                    }
+                }
+
+                else -> UnknownError(errorDto.description)
+            }
         } catch (_: Exception) {
-            null
+            UnknownError("Could not parse error body")
         }
 }

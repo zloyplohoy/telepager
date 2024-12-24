@@ -36,7 +36,8 @@ class RecipientServiceMenuViewModel @Inject constructor(
                     }
 
                     is Failure -> {
-                        _uiState.value = _uiState.value.copy(error = getUserResult.error.message)
+                        _uiState.value =
+                            _uiState.value.copy(error = getUserResult.error.javaClass.toString())
                     }
 
                     else -> {}
