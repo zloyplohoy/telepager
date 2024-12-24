@@ -31,6 +31,7 @@ include(":core:database")
 include(":core:datastore")
 include(":core:designsystem")
 include(":core:model")
+include(":core:result")
 include(":core:telegram")
 
 include(":feature:servicemenu")
