@@ -15,6 +15,7 @@ kotlinxSerializationJson = "1.7.3"
 lifecycleRuntime = "2.8.7"
 okhttp = "4.12.0"
 retrofit = "2.11.0"
+room = "2.6.1"
 
 
 
@@ -38,6 +39,13 @@ android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_li
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+# Build logic: Android Room convention plugin
+ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "kotlinSymbolProcessing" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-gradle-plugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 
 # Build logic: Hilt convention plugin
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -77,9 +85,14 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 # Compose navigation
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
+# Build logic: Android Room convention plugin
+room = { id = "androidx.room", version.ref = "room" }
+
+# Build logic: Android Room convention plugin, Hilt convention plugin
+ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinSymbolProcessing" }
+
 # Build logic: Hilt convention plugin
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinSymbolProcessing" }
 
 # Convention plugins
 telepager-android-application = { id = "telepager.android.application" }
@@ -87,5 +100,6 @@ telepager-android-application-compose = { id = "telepager.android.application.co
 telepager-android-feature = { id = "telepager.android.feature" }
 telepager-android-library = { id = "telepager.android.library" }
 telepager-android-library-compose = { id = "telepager.android.library.compose" }
+telepager-android-room = { id = "telepager.android.room" }
 telepager-hilt = { id = "telepager.hilt" }
 telepager-jvm-library = { id = "telepager.jvm.library" }
