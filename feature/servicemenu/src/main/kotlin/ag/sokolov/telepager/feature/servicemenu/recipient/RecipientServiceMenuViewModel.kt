@@ -1,7 +1,7 @@
 package ag.sokolov.telepager.feature.servicemenu.recipient
 
-import ag.sokolov.telepager.core.model.TelepagerResult.Failure
-import ag.sokolov.telepager.core.model.TelepagerResult.Success
+import ag.sokolov.telepager.core.result.Result.Failure
+import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.core.result)
     implementation(projects.core.model)
 
     implementation(libs.okhttp)

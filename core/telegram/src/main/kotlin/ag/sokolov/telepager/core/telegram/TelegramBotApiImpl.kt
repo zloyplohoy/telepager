@@ -5,10 +5,10 @@ import ag.sokolov.telepager.core.model.TelepagerError
 import ag.sokolov.telepager.core.model.TelepagerError.BotError
 import ag.sokolov.telepager.core.model.TelepagerError.NetworkError
 import ag.sokolov.telepager.core.model.TelepagerError.UnknownError
-import ag.sokolov.telepager.core.model.TelepagerResult
-import ag.sokolov.telepager.core.model.TelepagerResult.Failure
-import ag.sokolov.telepager.core.model.TelepagerResult.Success
 import ag.sokolov.telepager.core.model.UserDetails
+import ag.sokolov.telepager.core.result.Result
+import ag.sokolov.telepager.core.result.Result.Failure
+import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
@@ -39,7 +39,7 @@ internal class TelegramBotApiImpl @Inject constructor(
 
     override suspend fun getBot(
         apiToken: String,
-    ): TelepagerResult<BotDetails, TelepagerError> =
+    ): Result<BotDetails, TelepagerError> =
         safeApiCall(
             apiCall = { botApi.getMe(apiToken) },
             transform = { it.asBotDetails() }
@@ -48,7 +48,7 @@ internal class TelegramBotApiImpl @Inject constructor(
     override suspend fun getUser(
         apiToken: String,
         userId: Long,
-    ): TelepagerResult<UserDetails, TelepagerError> =
+    ): Result<UserDetails, TelepagerError> =
         safeApiCall(
             apiCall = { botApi.getChat(apiToken, userId) },
             transform = { it.asUserDetails() }
@@ -58,7 +58,7 @@ internal class TelegramBotApiImpl @Inject constructor(
         apiToken: String,
         userId: Long,
         text: String,
-    ): TelepagerResult<Unit, TelepagerError> =
+    ): Result<Unit, TelepagerError> =
         safeApiCall(
             apiCall = { botApi.sendMessage(apiToken, userId, text) },
             transform = { it }
@@ -67,7 +67,7 @@ internal class TelegramBotApiImpl @Inject constructor(
     private suspend fun <T, R> safeApiCall(
         apiCall: suspend () -> Response<ResponseDto<T>>,
         transform: (T) -> R,
-    ): TelepagerResult<R, TelepagerError> =
+    ): Result<R, TelepagerError> =
         try {
             val response = apiCall()
             if (response.isSuccessful) {
