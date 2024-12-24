@@ -1,6 +1,5 @@
 package ag.sokolov.telepager.core.telegram
 
-import ag.sokolov.telepager.core.model.BotDetails
 import ag.sokolov.telepager.core.model.UserDetails
 import ag.sokolov.telepager.core.result.Result
 import ag.sokolov.telepager.core.result.Result.Failure
@@ -13,7 +12,7 @@ import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
 import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.asBotDetails
+import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.asUserDetails
 import kotlinx.serialization.json.Json
 import okhttp3.Call
@@ -40,10 +39,10 @@ internal class TelegramBotApiImpl @Inject constructor(
 
     override suspend fun getBot(
         apiToken: String,
-    ): Result<BotDetails, TelegramBotApiError> =
+    ): Result<UserDto, TelegramBotApiError> =
         safeApiCall(
             apiCall = { botApi.getMe(apiToken) },
-            transform = { it.asBotDetails() }
+            transform = { it }
         )
 
     override suspend fun getUser(
