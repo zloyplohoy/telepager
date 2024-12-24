@@ -27,6 +27,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 
 include(":core:concurrency")
+include(":core:database")
 include(":core:datastore")
 include(":core:designsystem")
 include(":core:model")
