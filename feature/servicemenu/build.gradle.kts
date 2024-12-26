@@ -11,6 +11,5 @@ dependencies{
     implementation(projects.core.data)
     implementation(projects.core.database)
     implementation(projects.core.designsystem)
-    implementation(projects.core.model)
     implementation(projects.core.telegram)
 }
