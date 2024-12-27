@@ -75,11 +75,11 @@ class BotRepositoryImpl @Inject constructor(
             } else {
                 when (val getBotResult = telegramBotApi.getBot(token)) {
                     is Success -> {
-                        val userDto = getBotResult.data!!
+                        val bot = getBotResult.data!!
                         botDao.setIsValid(true)
                         botDao.setBotDetails(
-                            name = userDto.firstName,
-                            username = userDto.username!!
+                            name = bot.firstName,
+                            username = bot.username!!
                         )
                         Success()
                     }
