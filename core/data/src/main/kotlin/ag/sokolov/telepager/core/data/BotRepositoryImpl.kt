@@ -31,7 +31,7 @@ class BotRepositoryImpl @Inject constructor(
         botDao.getBot()
             .distinctUntilChanged()
             .map { it?.asExternalModel() }
-            .onStart { updateBotDetails() }
+            .onStart { updateDetails() }
 
     override suspend fun addBot(token: String): Result<Nothing, BotRepositoryError> =
         withContext(ioDispatcher) {
@@ -65,7 +65,7 @@ class BotRepositoryImpl @Inject constructor(
             Success()
         }
 
-    override suspend fun updateBotDetails(): Result<Nothing, BotRepositoryError> =
+    override suspend fun updateDetails(): Result<Nothing, BotRepositoryError> =
         withContext(ioDispatcher) {
             val token = botDao.getBotToken().firstOrNull()
 
@@ -76,7 +76,7 @@ class BotRepositoryImpl @Inject constructor(
                     is Success -> {
                         val bot = getBotResult.data!!
                         botDao.setIsTokenValid(true)
-                        botDao.setBotDetails(
+                        botDao.setDetails(
                             name = bot.firstName,
                             username = bot.username!!
                         )

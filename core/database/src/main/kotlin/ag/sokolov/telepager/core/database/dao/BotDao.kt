@@ -50,7 +50,7 @@ interface BotDao {
         WHERE record_id = 1
         """
     )
-    suspend fun setBotDetails(name: String, username: String)
+    suspend fun setDetails(name: String, username: String)
 
     @Query(
         """
