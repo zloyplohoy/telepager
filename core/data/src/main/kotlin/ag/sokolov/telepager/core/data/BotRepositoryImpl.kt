@@ -37,7 +37,7 @@ class BotRepositoryImpl @Inject constructor(
         withContext(ioDispatcher) {
             val getBotResult = telegramBotApi.getBot(token)
 
-            return@withContext when (getBotResult) {
+            when (getBotResult) {
                 is Success -> {
                     val bot = getBotResult.data!!
                     botDao.setBot(
@@ -63,7 +63,7 @@ class BotRepositoryImpl @Inject constructor(
     override suspend fun deleteBot(): Result<Nothing, BotRepositoryError> =
         withContext(ioDispatcher) {
             botDao.deleteBot()
-            return@withContext Success()
+            Success()
         }
 
     override suspend fun updateBotDetails(): Result<Nothing, BotRepositoryError> =
