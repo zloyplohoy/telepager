@@ -10,5 +10,6 @@ android {
 dependencies {
     api(projects.core.database)
     api(projects.core.result)
+    implementation(projects.core.concurrency)
     implementation(projects.core.telegram)
 }

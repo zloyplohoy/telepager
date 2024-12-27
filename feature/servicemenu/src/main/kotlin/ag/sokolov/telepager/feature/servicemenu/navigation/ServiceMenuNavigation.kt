@@ -2,8 +2,6 @@ package ag.sokolov.telepager.feature.servicemenu.navigation
 
 import ag.sokolov.telepager.feature.servicemenu.ServiceMenuRootScreen
 import ag.sokolov.telepager.feature.servicemenu.bot.BotServiceMenuScreen
-import ag.sokolov.telepager.feature.servicemenu.bot_details.BotDetailsServiceMenuScreen
-import ag.sokolov.telepager.feature.servicemenu.bot_token.BotTokenServiceMenuScreen
 import ag.sokolov.telepager.feature.servicemenu.message.MessageServiceMenuScreen
 import ag.sokolov.telepager.feature.servicemenu.recipient.RecipientServiceMenuScreen
 import androidx.navigation.NavGraphBuilder
@@ -19,12 +17,6 @@ object ServiceMenu
 object ServiceMenuRoot
 
 @Serializable
-object BotTokenServiceMenu
-
-@Serializable
-object BotDetailsServiceMenu
-
-@Serializable
 object BotServiceMenu
 
 @Serializable
@@ -37,18 +29,10 @@ fun NavGraphBuilder.serviceMenuFeature(navController: NavHostController) {
     navigation<ServiceMenu>(startDestination = ServiceMenuRoot) {
         composable<ServiceMenuRoot> {
             ServiceMenuRootScreen(
-                navigateToBotTokenServiceMenu = { navController.navigate(BotTokenServiceMenu) },
-                navigateToBotDetailsServiceMenu = { navController.navigate(BotDetailsServiceMenu) },
                 navigateToBotServiceMenu = { navController.navigate(BotServiceMenu) },
                 navigateToRecipientServiceMenu = { navController.navigate(UserServiceMenu) },
                 navigateToMessagesServiceMenu = { navController.navigate(MessageServiceMenu) }
             )
-        }
-        composable<BotTokenServiceMenu> {
-            BotTokenServiceMenuScreen()
-        }
-        composable<BotDetailsServiceMenu> {
-            BotDetailsServiceMenuScreen()
         }
         composable<BotServiceMenu> {
             BotServiceMenuScreen()

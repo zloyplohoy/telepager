@@ -3,6 +3,7 @@ package ag.sokolov.telepager.feature.servicemenu.recipient
 import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
+import ag.sokolov.telepager.core.telegram.retrofit.dto.asUserDetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,7 @@ class RecipientServiceMenuViewModel @Inject constructor(
                 when (getUserResult) {
                     is Success -> {
                         _uiState.value = _uiState.value.copy(
-                            userDetails = getUserResult.data,
+                            userDetails = getUserResult.data?.asUserDetails(),
                             error = null
                         )
                     }

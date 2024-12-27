@@ -93,21 +93,14 @@ internal fun BotServiceMenuScreen(
 
         TextField(
             enabled = false,
-            value = state.bot?.details?.id.toString(),
-            onValueChange = { },
-            label = { Text("ID") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            enabled = false,
-            value = state.bot?.details?.name.toString(),
+            value = state.bot?.name.toString(),
             onValueChange = { },
             label = { Text("Name") },
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             enabled = false,
-            value = state.bot?.details?.username.toString(),
+            value = state.bot?.username.toString(),
             onValueChange = { },
             label = { Text("Username") },
             modifier = Modifier.fillMaxWidth()
