@@ -13,7 +13,7 @@ data class BotEntity(
     @ColumnInfo(name = "record_id")
     val recordId: Int = 1,
     val token: String,
-    @ColumnInfo(name = "is_valid")
+    @ColumnInfo(name = "is_valid", defaultValue = "1")
     val isValid: Boolean,
     val id: Long,
     val name: String,

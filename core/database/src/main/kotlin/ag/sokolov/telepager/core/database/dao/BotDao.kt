@@ -28,11 +28,11 @@ interface BotDao {
     @Query(
         """
         INSERT
-        INTO bot (record_id, token, is_valid, id, name, username)
-        VALUES (1, :token, :isValid, :id, :name, :username)
+        INTO bot (record_id, token, id, name, username)
+        VALUES (1, :token, :id, :name, :username)
         """
     )
-    fun setBot(token: String, isValid: Boolean, id: Long, name: String, username: String)
+    fun setBot(token: String, id: Long, name: String, username: String)
 
     @Query(
         """

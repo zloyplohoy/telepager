@@ -42,7 +42,6 @@ class BotRepositoryImpl @Inject constructor(
                     val bot = getBotResult.data!!
                     botDao.setBot(
                         token = token,
-                        isValid = true,
                         id = bot.id,
                         name = bot.firstName,
                         username = bot.username!!
