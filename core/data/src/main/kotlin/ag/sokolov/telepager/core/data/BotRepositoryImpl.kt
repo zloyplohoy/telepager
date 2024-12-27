@@ -75,7 +75,7 @@ class BotRepositoryImpl @Inject constructor(
                 when (val getBotResult = telegramBotApi.getBot(token)) {
                     is Success -> {
                         val bot = getBotResult.data!!
-                        botDao.setIsValid(true)
+                        botDao.setIsTokenValid(true)
                         botDao.setBotDetails(
                             name = bot.firstName,
                             username = bot.username!!
@@ -85,7 +85,7 @@ class BotRepositoryImpl @Inject constructor(
 
                     is Failure -> {
                         if (getBotResult.error is TelegramBotApiError.Unauthorized) {
-                            botDao.setIsValid(false)
+                            botDao.setIsTokenValid(false)
                             Failure(InvalidToken)
                         } else {
                             Failure(UnknownError)

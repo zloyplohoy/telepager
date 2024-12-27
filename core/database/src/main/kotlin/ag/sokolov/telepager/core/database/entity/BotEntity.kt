@@ -13,15 +13,15 @@ data class BotEntity(
     @ColumnInfo(name = "record_id")
     val recordId: Int = 1,
     val token: String,
-    @ColumnInfo(name = "is_valid", defaultValue = "1")
-    val isValid: Boolean,
+    @ColumnInfo(name = "is_token_valid", defaultValue = "1")
+    val isTokenValid: Boolean,
     val id: Long,
     val name: String,
     val username: String,
 )
 
 fun BotEntity.asExternalModel() = Bot(
-    isValid = isValid,
+    isTokenValid = isTokenValid,
     name = name,
     username = username,
 )

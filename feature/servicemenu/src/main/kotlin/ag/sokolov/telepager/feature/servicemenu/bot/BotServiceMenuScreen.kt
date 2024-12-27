@@ -85,7 +85,7 @@ internal fun BotServiceMenuScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = state.bot?.isValid == true,
+                checked = state.bot?.isTokenValid == true,
                 onCheckedChange = null
             )
             Text("Bot is valid")

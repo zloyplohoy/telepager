@@ -37,11 +37,11 @@ interface BotDao {
     @Query(
         """
         UPDATE bot
-        SET is_valid = :isValid
+        SET is_token_valid = :isTokenValid
         WHERE record_id = 1
         """
     )
-    suspend fun setIsValid(isValid: Boolean)
+    suspend fun setIsTokenValid(isTokenValid: Boolean)
 
     @Query(
         """
