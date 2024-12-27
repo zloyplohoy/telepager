@@ -9,7 +9,7 @@ sealed class TelegramBotApiError {
     data object Unauthorized : TelegramBotApiError()
 
     sealed class Forbidden : TelegramBotApiError() {
-        data object BotBlocked : Forbidden()
+        data object BotWasBlockedByTheUser : Forbidden()
     }
 
     sealed class BadRequest : TelegramBotApiError() {

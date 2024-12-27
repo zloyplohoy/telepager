@@ -84,7 +84,7 @@ internal class TelegramBotApiImpl @Inject constructor(
             val errorDto = json.decodeFromString<ErrorDto>(response.errorBody()!!.string())
             when (response.code()) {
                 401 -> Unauthorized
-                403 -> Forbidden.BotBlocked
+                403 -> Forbidden.BotWasBlockedByTheUser
                 400 -> {
                     when (errorDto.description) {
                         "Bad Request: chat not found" -> BadRequest.ChatNotFound
