@@ -4,15 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "ag.sokolov.telepager.feature.servicemenu"
+    namespace = "ag.sokolov.telepager.feature.home"
 }
 
 dependencies{
-    implementation(projects.core.concurrency)
     implementation(projects.core.data)
-    implementation(projects.core.database)
     implementation(projects.core.designsystem)
-    implementation(projects.core.telegram)
-
-    implementation(projects.feature.home)
+    implementation(libs.accompanist.permissions)
 }

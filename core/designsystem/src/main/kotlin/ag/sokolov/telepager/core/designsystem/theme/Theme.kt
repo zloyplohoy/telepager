@@ -37,7 +37,7 @@ fun TelepagerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -51,7 +51,7 @@ fun TelepagerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = ag.sokolov.telepager.core.designsystem.theme.Typography,
+        typography = Typography,
         content = content
     )
 }

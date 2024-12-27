@@ -1,4 +1,5 @@
 [versions]
+accompanist = "0.37.0"
 activityCompose = "1.9.3"
 androidDesugarJdkLibs = "2.1.4"
 androidGradlePlugin = "8.7.3"
@@ -74,6 +75,9 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+
+# Module: :feature:home
+accompanist-permissions = {group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist"}
 
 
 

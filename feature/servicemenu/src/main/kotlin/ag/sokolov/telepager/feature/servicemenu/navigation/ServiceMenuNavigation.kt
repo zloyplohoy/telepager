@@ -1,5 +1,7 @@
 package ag.sokolov.telepager.feature.servicemenu.navigation
 
+import ag.sokolov.telepager.feature.home.navigation.homeScreen
+import ag.sokolov.telepager.feature.home.navigation.navigateToHome
 import ag.sokolov.telepager.feature.servicemenu.ServiceMenuRootScreen
 import ag.sokolov.telepager.feature.servicemenu.bot.BotServiceMenuScreen
 import ag.sokolov.telepager.feature.servicemenu.message.MessageServiceMenuScreen
@@ -31,7 +33,8 @@ fun NavGraphBuilder.serviceMenuFeature(navController: NavHostController) {
             ServiceMenuRootScreen(
                 navigateToBotServiceMenu = { navController.navigate(BotServiceMenu) },
                 navigateToRecipientServiceMenu = { navController.navigate(UserServiceMenu) },
-                navigateToMessagesServiceMenu = { navController.navigate(MessageServiceMenu) }
+                navigateToMessagesServiceMenu = { navController.navigate(MessageServiceMenu) },
+                navigateToHomeScreen = { navController.navigateToHome() }
             )
         }
         composable<BotServiceMenu> {
@@ -43,5 +46,6 @@ fun NavGraphBuilder.serviceMenuFeature(navController: NavHostController) {
         composable<MessageServiceMenu> {
             MessageServiceMenuScreen()
         }
+        homeScreen(onBackClick = { navController.popBackStack() })
     }
 }

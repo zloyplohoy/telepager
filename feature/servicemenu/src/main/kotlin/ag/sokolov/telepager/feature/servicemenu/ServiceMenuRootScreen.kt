@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
@@ -18,6 +19,7 @@ fun ServiceMenuRootScreen(
     navigateToBotServiceMenu: () -> Unit = {},
     navigateToRecipientServiceMenu: () -> Unit = {},
     navigateToMessagesServiceMenu: () -> Unit = {},
+    navigateToHomeScreen: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Column {
@@ -35,6 +37,11 @@ fun ServiceMenuRootScreen(
             leadingContent = { Icon(Icons.AutoMirrored.Filled.Message, null) },
             headlineContent = { Text("Messages") },
             modifier = Modifier.clickable { navigateToMessagesServiceMenu() }
+        )
+        ListItem(
+            leadingContent = { Icon(Icons.Filled.Star, null) },
+            headlineContent = { Text("New home screen") },
+            modifier = Modifier.clickable { navigateToHomeScreen() }
         )
     }
 }
