@@ -1,6 +1,5 @@
-package ag.sokolov.telepager.ui.theme
+package ag.sokolov.telepager.core.designsystem.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -52,7 +51,7 @@ fun TelepagerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = ag.sokolov.telepager.core.designsystem.theme.Typography,
         content = content
     )
 }

@@ -1,8 +1,8 @@
 package ag.sokolov.telepager
 
+import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
 import ag.sokolov.telepager.ui.TelepagerApp
 import ag.sokolov.telepager.ui.rememberTelepagerAppState
-import ag.sokolov.telepager.ui.theme.TelepagerTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

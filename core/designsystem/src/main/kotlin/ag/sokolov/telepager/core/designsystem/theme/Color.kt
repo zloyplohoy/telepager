@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.ui.theme
+package ag.sokolov.telepager.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
