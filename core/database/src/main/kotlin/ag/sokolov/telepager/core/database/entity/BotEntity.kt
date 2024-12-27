@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
 )
 data class BotEntity(
     @PrimaryKey
-    @ColumnInfo(name = "record_id")
-    val recordId: Int = 1,
+    @ColumnInfo(name = "record_id", defaultValue = "1")
+    val recordId: Int,
     val token: String,
     @ColumnInfo(name = "is_token_valid", defaultValue = "1")
     val isTokenValid: Boolean,
