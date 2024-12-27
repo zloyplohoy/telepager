@@ -8,4 +8,5 @@ interface BotRepository {
     fun getBot() : Flow<Bot?>
     suspend fun addBot(token: String): Result<Nothing, BotRepositoryError>
     suspend fun deleteBot(): Result<Nothing, BotRepositoryError>
+    suspend fun updateBotDetails(): Result<Nothing, BotRepositoryError>
 }
