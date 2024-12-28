@@ -1,61 +1,56 @@
 package ag.sokolov.telepager.feature.servicemenu.recipient
 
-import ag.sokolov.telepager.core.result.Result.Failure
+import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
+import ag.sokolov.telepager.core.concurrency.Dispatcher
+import ag.sokolov.telepager.core.data.RecipientRepository
+import ag.sokolov.telepager.core.database.dao.BotDao
+import ag.sokolov.telepager.core.database.dao.RecipientDao
 import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
 import ag.sokolov.telepager.core.telegram.retrofit.dto.asUserDetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class RecipientServiceMenuViewModel @Inject constructor(
+    private val botDao: BotDao,
+    private val recipientDao: RecipientDao,
     private val telegramBotApi: TelegramBotApi,
+    private val recipientRepository: RecipientRepository,
+    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(UserServiceMenuState())
-    val uiState: StateFlow<UserServiceMenuState> = _uiState.asStateFlow()
+    val uiState = recipientRepository.getRecipients()
+        .map { RecipientServiceMenuState(recipients = it) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = RecipientServiceMenuState()
+        )
 
-    fun getUser() {
+    fun addRecipient(id: Long) {
         viewModelScope.launch {
-            if (_uiState.value.userId != "") {
-                val getUserResult =
-                    telegramBotApi.getUser(
-                        _uiState.value.botToken,
-                        _uiState.value.userId.toLong()
+            withContext(ioDispatcher) {
+                val botToken = botDao.getBotToken().firstOrNull()
+                val getUserResult = telegramBotApi.getUser(apiToken = botToken!!, userId = id)
+                if (getUserResult is Success) {
+                    val user = getUserResult.data!!.asUserDetails()
+                    recipientDao.addRecipient(
+                        id = user.id,
+                        firstName = user.firstName,
+                        lastName = user.lastName,
+                        username = user.username
                     )
-                when (getUserResult) {
-                    is Success -> {
-                        _uiState.value = _uiState.value.copy(
-                            userDetails = getUserResult.data?.asUserDetails(),
-                            error = null
-                        )
-                    }
-
-                    is Failure -> {
-                        _uiState.value =
-                            _uiState.value.copy(error = getUserResult.error.javaClass.toString())
-                    }
-
-                    else -> {}
                 }
             }
-        }
-    }
-
-    fun onTokenValueChange(value: String) {
-        _uiState.value = _uiState.value.copy(
-            botToken = value
-        )
-    }
-
-    fun onUserIdValueChange(value: String) {
-        if (value.all { it.isDigit() }) {
-            _uiState.value = _uiState.value.copy(userId = value)
         }
     }
 }

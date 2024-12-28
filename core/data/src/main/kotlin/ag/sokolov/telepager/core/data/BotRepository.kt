@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BotRepository {
     fun getBot() : Flow<Bot?>
-    suspend fun addBot(token: String): Result<Nothing, BotRepositoryError>
-    suspend fun deleteBot(): Result<Nothing, BotRepositoryError>
-    suspend fun updateDetails(): Result<Nothing, BotRepositoryError>
+    suspend fun addBot(token: String): Result<Nothing, RepositoryError>
+    suspend fun deleteBot(): Result<Nothing, RepositoryError>
+    suspend fun updateDetails(): Result<Nothing, RepositoryError>
 }

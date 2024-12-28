@@ -12,4 +12,5 @@ dependencies{
     implementation(projects.core.database)
     implementation(projects.core.designsystem)
     implementation(projects.core.telegram)
+    implementation(project(":core:concurrency"))
 }

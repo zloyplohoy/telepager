@@ -2,9 +2,9 @@ package ag.sokolov.telepager.core.data
 
 import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
 import ag.sokolov.telepager.core.concurrency.Dispatcher
-import ag.sokolov.telepager.core.data.BotRepositoryError.InvalidToken
-import ag.sokolov.telepager.core.data.BotRepositoryError.NetworkError
-import ag.sokolov.telepager.core.data.BotRepositoryError.UnknownError
+import ag.sokolov.telepager.core.data.RepositoryError.InvalidToken
+import ag.sokolov.telepager.core.data.RepositoryError.NetworkError
+import ag.sokolov.telepager.core.data.RepositoryError.UnknownError
 import ag.sokolov.telepager.core.database.dao.BotDao
 import ag.sokolov.telepager.core.database.entity.asExternalModel
 import ag.sokolov.telepager.core.model.Bot
@@ -33,7 +33,7 @@ class BotRepositoryImpl @Inject constructor(
             .map { it?.asExternalModel() }
             .onStart { updateDetails() }
 
-    override suspend fun addBot(token: String): Result<Nothing, BotRepositoryError> =
+    override suspend fun addBot(token: String): Result<Nothing, RepositoryError> =
         withContext(ioDispatcher) {
             val getBotResult = telegramBotApi.getBot(token)
 
@@ -59,13 +59,13 @@ class BotRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun deleteBot(): Result<Nothing, BotRepositoryError> =
+    override suspend fun deleteBot(): Result<Nothing, RepositoryError> =
         withContext(ioDispatcher) {
             botDao.deleteBot()
             Success()
         }
 
-    override suspend fun updateDetails(): Result<Nothing, BotRepositoryError> =
+    override suspend fun updateDetails(): Result<Nothing, RepositoryError> =
         withContext(ioDispatcher) {
             val token = botDao.getBotToken().firstOrNull()
 

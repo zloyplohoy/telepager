@@ -36,6 +36,15 @@ interface RecipientDao {
     @Query(
         """
         UPDATE recipient
+        SET is_deleted = :isDeleted
+        WHERE id = :id
+        """
+    )
+    fun setIsDeleted(id: Long, isDeleted: Boolean)
+
+    @Query(
+        """
+        UPDATE recipient
         SET is_bot_blocked = :isBotBlocked
         WHERE id = :id
         """

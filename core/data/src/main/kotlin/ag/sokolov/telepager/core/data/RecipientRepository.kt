@@ -12,9 +12,9 @@ interface RecipientRepository {
         firstName: String,
         lastName: String?,
         username: String?,
-    ): Result<Nothing, RecipientRepositoryError>
+    ): Result<Nothing, RepositoryError>
 
-    suspend fun updateDetails(): Result<Nothing, RecipientRepositoryError>
+    suspend fun updateDetails(): Result<Nothing, RepositoryError>
 
-    suspend fun deleteRecipient(id: Long): Result<Nothing, RecipientRepositoryError>
+    suspend fun deleteRecipient(id: Long): Result<Nothing, RepositoryError>
 }

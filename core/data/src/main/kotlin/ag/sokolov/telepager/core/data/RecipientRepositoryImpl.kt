@@ -2,9 +2,8 @@ package ag.sokolov.telepager.core.data
 
 import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
 import ag.sokolov.telepager.core.concurrency.Dispatcher
-import ag.sokolov.telepager.core.data.RecipientRepositoryError.InvalidToken
-import ag.sokolov.telepager.core.data.RecipientRepositoryError.NetworkError
-import ag.sokolov.telepager.core.data.RecipientRepositoryError.UnknownError
+import ag.sokolov.telepager.core.data.RepositoryError.InvalidToken
+import ag.sokolov.telepager.core.data.RepositoryError.TokenNotSet
 import ag.sokolov.telepager.core.database.dao.BotDao
 import ag.sokolov.telepager.core.database.dao.RecipientDao
 import ag.sokolov.telepager.core.database.entity.asExternalModel
@@ -38,16 +37,14 @@ class RecipientRepositoryImpl @Inject constructor(
     override fun getRecipientIds(): Flow<List<Long>> =
         recipientDao.getRecipients()
             .distinctUntilChanged()
-            .map { recipients ->
-                recipients.map { it.id }
-            }
+            .map { it.map { it.id } }
 
     override suspend fun addRecipient(
         id: Long,
         firstName: String,
         lastName: String?,
         username: String?,
-    ): Result<Nothing, RecipientRepositoryError> =
+    ): Result<Nothing, RepositoryError> =
         withContext(ioDispatcher) {
             recipientDao.addRecipient(
                 id = id,
@@ -58,56 +55,66 @@ class RecipientRepositoryImpl @Inject constructor(
             Success()
         }
 
-    override suspend fun updateDetails(): Result<Nothing, RecipientRepositoryError> =
+    override suspend fun updateDetails(): Result<Nothing, RepositoryError> =
         withContext(ioDispatcher) {
             val botToken = botDao.getBotToken().firstOrNull()
+            val recipientIds = recipientDao.getRecipients().firstOrNull()?.map { it.id }
 
             if (botToken == null) {
-                Failure(InvalidToken)
-            } else {
-                recipientDao.getRecipients()
-                    .firstOrNull()
-                    ?.map { updateDetails(botToken = botToken, recipientId = it.id) }
+                Failure(TokenNotSet)
+            } else if (recipientIds == null) {
                 Success()
+            } else {
+                when (val getMeResult = telegramBotApi.getBot(botToken)) {
+                    is Success -> {
+                        recipientIds.forEach { updateDetails(botToken, it) }
+                        Success()
+                    }
+
+                    is Failure -> {
+                        when (getMeResult.error) {
+                            is TelegramBotApiError.Unauthorized -> {
+                                botDao.setIsTokenValid(false)
+                                Failure(InvalidToken)
+                            }
+
+                            else -> {
+                                getMeResult.asRepositoryResult()
+                            }
+                        }
+                    }
+                }
             }
         }
 
     private suspend fun updateDetails(
         botToken: String,
         recipientId: Long,
-    ): Result<Nothing, RecipientRepositoryError> =
-        when (val getUserResult = telegramBotApi.getUser(botToken, recipientId)) {
+    ) =
+        when (val getChatResult = telegramBotApi.getUser(botToken, recipientId)) {
             is Success -> {
-                val user = getUserResult.data!!
+                val user = getChatResult.data!!
 
                 if (user.firstName == "") {
-                    recipientDao.setDetails(
-                        id = recipientId,
-                        firstName = "Deleted Account",
-                        lastName = null,
-                        username = null
-                    )
-                } else {
-                    recipientDao.setDetails(
-                        id = recipientId,
-                        firstName = user.firstName,
-                        lastName = user.lastName,
-                        username = user.username
-                    )
+                    recipientDao.setIsDeleted(id = user.id, isDeleted = true)
                 }
-                Success()
+
+                recipientDao.setDetails(
+                    id = recipientId,
+                    firstName = user.firstName,
+                    lastName = user.lastName,
+                    username = user.username
+                )
             }
 
             is Failure -> {
-                when (getUserResult.error) {
+                when (getChatResult.error) {
                     is TelegramBotApiError.Unauthorized -> {
                         botDao.setIsTokenValid(false)
-                        Failure(InvalidToken)
                     }
 
                     is TelegramBotApiError.Forbidden.BotWasBlockedByTheUser -> {
                         recipientDao.setIsBotBlocked(id = recipientId, isBotBlocked = true)
-                        Success()
                     }
 
                     is TelegramBotApiError.BadRequest.ChatNotFound -> {
@@ -117,20 +124,15 @@ class RecipientRepositoryImpl @Inject constructor(
                             lastName = null,
                             username = null
                         )
-                        Success()
                     }
 
-                    is TelegramBotApiError.NetworkError -> {
-                        Failure(NetworkError)
-                    }
-
-                    else -> Failure(UnknownError)
+                    else -> {}
                 }
             }
         }
 
 
-    override suspend fun deleteRecipient(id: Long): Result<Nothing, RecipientRepositoryError> =
+    override suspend fun deleteRecipient(id: Long): Result<Nothing, RepositoryError> =
         withContext(ioDispatcher) {
             recipientDao.deleteRecipient(id)
             Success()

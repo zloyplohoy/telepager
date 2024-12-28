@@ -1,18 +1,24 @@
 package ag.sokolov.telepager.feature.servicemenu.recipient
 
-import ag.sokolov.telepager.core.model.UserDetails
+import ag.sokolov.telepager.core.model.Recipient
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -24,81 +30,83 @@ fun RecipientServiceMenuScreen(
 
     RecipientServiceMenuScreen(
         state = state,
-        onTokenValueChange = viewModel::onTokenValueChange,
-        onUserIdValueChange = viewModel::onUserIdValueChange,
-        getUser = viewModel::getUser
+        addRecipient = viewModel::addRecipient
     )
 }
 
 @Composable
 internal fun RecipientServiceMenuScreen(
-    state: UserServiceMenuState = UserServiceMenuState(),
-    onTokenValueChange: (String) -> Unit = {},
-    onUserIdValueChange: (String) -> Unit = {},
-    getUser: () -> Unit = {},
+    state: RecipientServiceMenuState = RecipientServiceMenuState(),
+    addRecipient: (Long) -> Unit = {},
 ) {
+    var recipientId by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         TextField(
-            value = state.botToken,
-            onValueChange = onTokenValueChange,
-            label = { Text("Telegram bot API token") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            value = state.userId.toString(),
-            onValueChange = onUserIdValueChange,
-            label = { Text("User ID") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            value = recipientId,
+            onValueChange = {
+                if (it.isDigitsOnly()) {
+                    recipientId = it
+                }
+            },
+            label = { Text("Recipient ID") },
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = getUser
+            onClick = { addRecipient(recipientId.toLong()) }
         ) {
-            Text("Get user")
+            Text("Add recipient")
         }
-        TextField(
-            value = state.userDetails?.username ?: "None",
-            readOnly = true,
-            onValueChange = {},
-            label = { Text("User username") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            value = state.userDetails?.firstName ?: "None",
-            readOnly = true,
-            onValueChange = {},
-            label = { Text("User first name") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            value = state.userDetails?.lastName ?: "None",
-            readOnly = true,
-            onValueChange = {},
-            label = { Text("User last name") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        TextField(
-            value = state.error ?: "None",
-            readOnly = true,
-            isError = true,
-            onValueChange = {},
-            label = { Text("Error") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        state.recipients.forEach {
+            TextField(
+                value = it.firstName,
+                readOnly = true,
+                onValueChange = {},
+                label = { Text("Name") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            TextField(
+                value = it.lastName ?: "None",
+                readOnly = true,
+                onValueChange = {},
+                label = { Text("Last name") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            TextField(
+                value = it.username ?: "None",
+                readOnly = true,
+                onValueChange = {},
+                label = { Text("Username") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = it.isBotBlocked,
+                    onCheckedChange = null
+                )
+                Text("Bot is blocked")
+                Spacer(modifier = Modifier.weight(1f))
+                Checkbox(
+                    checked = it.isDeleted,
+                    onCheckedChange = null
+                )
+                Text("Account is deleted")
+            }
+        }
     }
 }
 
 @Preview
 @Composable
 private fun PreviewRecipientServiceMenuScreen() {
-    RecipientServiceMenuScreen(UserServiceMenuState())
+    RecipientServiceMenuScreen(RecipientServiceMenuState(emptyList()))
 }
 
-data class UserServiceMenuState(
-    val botToken: String = "",
-    val userId: String = "",
-    val userDetails: UserDetails? = null,
+data class RecipientServiceMenuState(
+    val recipients: List<Recipient> = emptyList(),
     val error: String? = null,
 )
