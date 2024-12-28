@@ -65,7 +65,7 @@ class RecipientRepositoryImpl @Inject constructor(
             } else if (recipientIds == null) {
                 Success()
             } else {
-                when (val getMeResult = telegramBotApi.getBot(botToken)) {
+                when (val getMeResult = telegramBotApi.getMe(botToken)) {
                     is Success -> {
                         recipientIds.forEach { updateDetails(botToken, it) }
                         Success()
@@ -91,7 +91,7 @@ class RecipientRepositoryImpl @Inject constructor(
         botToken: String,
         recipientId: Long,
     ) =
-        when (val getChatResult = telegramBotApi.getUser(botToken, recipientId)) {
+        when (val getChatResult = telegramBotApi.getChat(botToken, recipientId)) {
             is Success -> {
                 val user = getChatResult.data!!
 
@@ -101,7 +101,7 @@ class RecipientRepositoryImpl @Inject constructor(
 
                 recipientDao.setDetails(
                     id = recipientId,
-                    firstName = user.firstName,
+                    firstName = user.firstName!!,
                     lastName = user.lastName,
                     username = user.username
                 )

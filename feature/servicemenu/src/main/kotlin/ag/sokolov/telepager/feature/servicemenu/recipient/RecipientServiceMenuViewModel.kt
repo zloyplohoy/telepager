@@ -7,7 +7,6 @@ import ag.sokolov.telepager.core.database.dao.BotDao
 import ag.sokolov.telepager.core.database.dao.RecipientDao
 import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
-import ag.sokolov.telepager.core.telegram.retrofit.dto.asUserDetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,12 +39,12 @@ class RecipientServiceMenuViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(ioDispatcher) {
                 val botToken = botDao.getBotToken().firstOrNull()
-                val getUserResult = telegramBotApi.getUser(apiToken = botToken!!, userId = id)
+                val getUserResult = telegramBotApi.getChat(apiToken = botToken!!, userId = id)
                 if (getUserResult is Success) {
-                    val user = getUserResult.data!!.asUserDetails()
+                    val user = getUserResult.data!!
                     recipientDao.addRecipient(
                         id = user.id,
-                        firstName = user.firstName,
+                        firstName = user.firstName!!,
                         lastName = user.lastName,
                         username = user.username
                     )

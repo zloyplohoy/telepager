@@ -1,20 +1,21 @@
 package ag.sokolov.telepager.core.telegram
 
 import ag.sokolov.telepager.core.result.Result
+import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatFullInfoDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
 
 interface TelegramBotApi {
-    suspend fun getBot(
-        apiToken: String,
+    suspend fun getMe(
+        token: String,
     ): Result<UserDto, TelegramBotApiError>
 
-    suspend fun getUser(
-        apiToken: String,
+    suspend fun getChat(
+        token: String,
         userId: Long,
-    ): Result<UserDto, TelegramBotApiError>
+    ): Result<ChatFullInfoDto, TelegramBotApiError>
 
     suspend fun sendMessage(
-        apiToken: String,
+        token: String,
         userId: Long,
         text: String,
     ): Result<Unit, TelegramBotApiError>

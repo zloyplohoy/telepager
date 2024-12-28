@@ -9,6 +9,7 @@ import ag.sokolov.telepager.core.telegram.TelegramBotApiError.NetworkError
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
 import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
+import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatFullInfoDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
@@ -35,30 +36,30 @@ internal class TelegramBotApiImpl @Inject constructor(
             .build()
             .create(RetrofitTelegramBotApi::class.java)
 
-    override suspend fun getBot(
-        apiToken: String,
+    override suspend fun getMe(
+        token: String,
     ): Result<UserDto, TelegramBotApiError> =
         safeApiCall(
-            apiCall = { botApi.getMe(apiToken) },
+            apiCall = { botApi.getMe(token) },
             transform = { it }
         )
 
-    override suspend fun getUser(
-        apiToken: String,
+    override suspend fun getChat(
+        token: String,
         userId: Long,
-    ): Result<UserDto, TelegramBotApiError> =
+    ): Result<ChatFullInfoDto, TelegramBotApiError> =
         safeApiCall(
-            apiCall = { botApi.getChat(apiToken, userId) },
+            apiCall = { botApi.getChat(token, userId) },
             transform = { it }
         )
 
     override suspend fun sendMessage(
-        apiToken: String,
+        token: String,
         userId: Long,
         text: String,
     ): Result<Unit, TelegramBotApiError> =
         safeApiCall(
-            apiCall = { botApi.sendMessage(apiToken, userId, text) },
+            apiCall = { botApi.sendMessage(token, userId, text) },
             transform = { it }
         )
 

@@ -1,5 +1,6 @@
 package ag.sokolov.telepager.core.telegram.retrofit
 
+import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatFullInfoDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
@@ -23,7 +24,7 @@ interface RetrofitTelegramBotApi {
     suspend fun getChat(
         @Path("token") token: String,
         @Query("chat_id") chatId: Long,
-    ): Response<ResponseDto<UserDto>>
+    ): Response<ResponseDto<ChatFullInfoDto>>
 
     // https://core.telegram.org/bots/api#getupdates
     @GET("/bot{token}/getUpdates")
