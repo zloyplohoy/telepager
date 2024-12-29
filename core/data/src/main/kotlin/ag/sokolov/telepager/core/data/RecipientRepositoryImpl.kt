@@ -42,22 +42,6 @@ class RecipientRepositoryImpl @Inject constructor(
             .map { it.map { it.id } }
 
     override suspend fun addRecipient(
-        id: Long,
-        firstName: String,
-        lastName: String?,
-        username: String?,
-    ): Result<Nothing, RepositoryError> =
-        withContext(ioDispatcher) {
-            recipientDao.addRecipient(
-                id = id,
-                firstName = firstName,
-                lastName = lastName,
-                username = username
-            )
-            Success()
-        }
-
-    override suspend fun addRecipient(
         code: String,
         timeoutMillis: Long,
     ): Result<Nothing, RepositoryError> =
