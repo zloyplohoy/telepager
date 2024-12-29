@@ -2,6 +2,7 @@ package ag.sokolov.telepager.core.telegram
 
 import ag.sokolov.telepager.core.result.Result
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatFullInfoDto
+import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
 
 interface TelegramBotApi {
@@ -13,6 +14,13 @@ interface TelegramBotApi {
         token: String,
         userId: Long,
     ): Result<ChatFullInfoDto, TelegramBotApiError>
+
+    suspend fun getUpdates(
+        token: String,
+        timeout: Long? = null,
+        offset: Long? = null,
+        allowedUpdates: List<String>? = null,
+    ): Result<List<UpdateDto>, TelegramBotApiError>
 
     suspend fun sendMessage(
         token: String,

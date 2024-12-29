@@ -12,6 +12,7 @@ import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatFullInfoDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
+import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
 import kotlinx.serialization.json.Json
 import okhttp3.Call
@@ -50,6 +51,17 @@ internal class TelegramBotApiImpl @Inject constructor(
     ): Result<ChatFullInfoDto, TelegramBotApiError> =
         safeApiCall(
             apiCall = { botApi.getChat(token, userId) },
+            transform = { it }
+        )
+
+    override suspend fun getUpdates(
+        token: String,
+        timeout: Long?,
+        offset: Long?,
+        allowedUpdates: List<String>?,
+    ): Result<List<UpdateDto>, TelegramBotApiError> =
+        safeApiCall(
+            apiCall = { botApi.getUpdates(token, timeout, offset, allowedUpdates) },
             transform = { it }
         )
 
