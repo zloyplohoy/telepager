@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,32 +32,43 @@ fun RecipientServiceMenuScreen(
 
     RecipientServiceMenuScreen(
         state = state,
-        addRecipient = viewModel::addRecipient
+        addRecipient = viewModel::addRecipient,
+        deleteRecipient = viewModel::deleteRecipient
     )
 }
 
 @Composable
 internal fun RecipientServiceMenuScreen(
     state: RecipientServiceMenuState = RecipientServiceMenuState(),
-    addRecipient: (Long) -> Unit = {},
+    addRecipient: (String) -> Unit = {},
+    deleteRecipient: (Long) -> Unit = {},
 ) {
-    var recipientId by remember { mutableStateOf("") }
+    var code by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         TextField(
-            value = recipientId,
+            value = code,
             onValueChange = {
                 if (it.isDigitsOnly()) {
-                    recipientId = it
+                    code = it
                 }
             },
-            label = { Text("Recipient ID") },
+            label = { Text("Code") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
+        TextField(
+            value = state.error ?: "",
+            onValueChange = {},
+            enabled = false,
+            isError = true,
+            label = { Text("Last Error") },
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = { addRecipient(recipientId.toLong()) }
+            onClick = { addRecipient(code) }
         ) {
             Text("Add recipient")
         }
@@ -96,6 +109,11 @@ internal fun RecipientServiceMenuScreen(
                 )
                 Text("Account is deleted")
             }
+            Button(
+                onClick = { deleteRecipient(it.id) }
+            ) {
+                Text("Delete recipient")
+            }
         }
     }
 }
@@ -103,7 +121,7 @@ internal fun RecipientServiceMenuScreen(
 @Preview
 @Composable
 private fun PreviewRecipientServiceMenuScreen() {
-    RecipientServiceMenuScreen(RecipientServiceMenuState(emptyList()))
+    RecipientServiceMenuScreen(RecipientServiceMenuState())
 }
 
 data class RecipientServiceMenuState(

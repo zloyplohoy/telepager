@@ -10,6 +10,7 @@ sealed class RepositoryError {
     data object InvalidToken : RepositoryError()
     data object NetworkError : RepositoryError()
     data object UnknownError : RepositoryError()
+    data object RecipientRegistrationTimeoutExceeded : RepositoryError()
 }
 
 fun Result<Nothing, TelegramBotApiError>.asRepositoryResult(): Result<Nothing, RepositoryError> =

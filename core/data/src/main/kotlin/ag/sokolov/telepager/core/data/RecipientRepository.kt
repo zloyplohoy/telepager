@@ -14,6 +14,8 @@ interface RecipientRepository {
         username: String?,
     ): Result<Nothing, RepositoryError>
 
+    suspend fun addRecipient(code: String, timeoutMillis: Long): Result<Nothing, RepositoryError>
+
     suspend fun updateDetails(): Result<Nothing, RepositoryError>
 
     suspend fun deleteRecipient(id: Long): Result<Nothing, RepositoryError>
