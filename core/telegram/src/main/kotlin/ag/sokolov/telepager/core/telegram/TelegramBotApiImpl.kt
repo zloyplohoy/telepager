@@ -40,19 +40,13 @@ internal class TelegramBotApiImpl @Inject constructor(
     override suspend fun getMe(
         token: String,
     ): Result<UserDto, TelegramBotApiError> =
-        safeApiCall(
-            apiCall = { botApi.getMe(token) },
-            transform = { it }
-        )
+        safeApiCall { botApi.getMe(token) }
 
     override suspend fun getChat(
         token: String,
         userId: Long,
     ): Result<ChatFullInfoDto, TelegramBotApiError> =
-        safeApiCall(
-            apiCall = { botApi.getChat(token, userId) },
-            transform = { it }
-        )
+        safeApiCall { botApi.getChat(token, userId) }
 
     override suspend fun getUpdates(
         token: String,
@@ -60,29 +54,22 @@ internal class TelegramBotApiImpl @Inject constructor(
         offset: Long?,
         allowedUpdates: List<String>?,
     ): Result<List<UpdateDto>, TelegramBotApiError> =
-        safeApiCall(
-            apiCall = { botApi.getUpdates(token, timeout, offset, allowedUpdates) },
-            transform = { it }
-        )
+        safeApiCall { botApi.getUpdates(token, timeout, offset, allowedUpdates) }
 
     override suspend fun sendMessage(
         token: String,
         userId: Long,
         text: String,
     ): Result<Unit, TelegramBotApiError> =
-        safeApiCall(
-            apiCall = { botApi.sendMessage(token, userId, text) },
-            transform = { it }
-        )
+        safeApiCall { botApi.sendMessage(token, userId, text) }
 
-    private suspend fun <T, R> safeApiCall(
+    private suspend fun <T> safeApiCall(
         apiCall: suspend () -> Response<ResponseDto<T>>,
-        transform: (T) -> R,
-    ): Result<R, TelegramBotApiError> =
+    ): Result<T, TelegramBotApiError> =
         try {
             val response = apiCall()
             if (response.isSuccessful) {
-                Success(transform(response.body()!!.result))
+                Success(response.body()!!.result)
             } else {
                 Failure(getTelegramApiError<T>(response))
             }
