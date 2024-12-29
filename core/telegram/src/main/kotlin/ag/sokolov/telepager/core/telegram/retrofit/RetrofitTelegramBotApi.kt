@@ -30,10 +30,10 @@ interface RetrofitTelegramBotApi {
     @GET("/bot{token}/getUpdates")
     suspend fun getUpdates(
         @Path("token") token: String,
-        @Query("timeout") timeout: Long?,
-        @Query("offset") offset: Long?,
-        @Query("allowed_updates") allowedUpdates: List<String>?,
-    ): ResponseDto<List<UpdateDto>>
+        @Query("timeout") timeout: Long? = null,
+        @Query("offset") offset: Long? = null,
+        @Query("allowed_updates") allowedUpdates: List<String>? = null,
+    ): Response<ResponseDto<List<UpdateDto>>>
 
     // https://core.telegram.org/bots/api#sendmessage
     @FormUrlEncoded
