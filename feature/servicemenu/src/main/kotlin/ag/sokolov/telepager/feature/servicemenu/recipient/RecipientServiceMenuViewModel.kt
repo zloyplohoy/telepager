@@ -39,7 +39,7 @@ class RecipientServiceMenuViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(ioDispatcher) {
                 val botToken = botDao.getBotToken().firstOrNull()
-                val getUserResult = telegramBotApi.getChat(apiToken = botToken!!, userId = id)
+                val getUserResult = telegramBotApi.getChat(botToken!!, id)
                 if (getUserResult is Success) {
                     val user = getUserResult.data!!
                     recipientDao.addRecipient(
