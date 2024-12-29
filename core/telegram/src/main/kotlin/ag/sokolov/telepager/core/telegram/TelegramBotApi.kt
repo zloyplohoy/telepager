@@ -12,7 +12,7 @@ interface TelegramBotApi {
 
     suspend fun getChat(
         token: String,
-        userId: Long,
+        chatId: Long,
     ): Result<ChatFullInfoDto, TelegramBotApiError>
 
     suspend fun getUpdates(

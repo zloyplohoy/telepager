@@ -44,9 +44,9 @@ internal class TelegramBotApiImpl @Inject constructor(
 
     override suspend fun getChat(
         token: String,
-        userId: Long,
+        chatId: Long,
     ): Result<ChatFullInfoDto, TelegramBotApiError> =
-        safeApiCall { botApi.getChat(token, userId) }
+        safeApiCall { botApi.getChat(token, chatId) }
 
     override suspend fun getUpdates(
         token: String,
