@@ -5,8 +5,10 @@ import ag.sokolov.telepager.feature.home.navigation.homeScreen
 import ag.sokolov.telepager.feature.permissions.navigation.navigateToPermissions
 import ag.sokolov.telepager.feature.permissions.navigation.permissionsScreen
 import ag.sokolov.telepager.ui.TelepagerAppState
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import kotlinx.serialization.Serializable
@@ -18,15 +20,16 @@ object TelepagerNavigation
 fun TelepagerNavHost(
     appState: TelepagerAppState,
     onShowSnackbar: suspend (String) -> Boolean, // TODO: What is it?
-    modifier: Modifier = Modifier,
 ) {
     val navController = appState.navController
-
 
     NavHost(
         navController = navController,
         startDestination = TelepagerNavigation,
-        modifier = modifier
+        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left) + fadeIn() },
+        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left) + fadeOut() },
+        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right) + fadeIn() },
+        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right) + fadeOut() }
     ) {
         navigation<TelepagerNavigation>(startDestination = HomeScreenRoute) {
             homeScreen(onNavigateToPermissions = navController::navigateToPermissions)
