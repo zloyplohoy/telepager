@@ -2,6 +2,8 @@ package ag.sokolov.telepager.navigation
 
 import ag.sokolov.telepager.feature.home.navigation.HomeScreenRoute
 import ag.sokolov.telepager.feature.home.navigation.homeScreen
+import ag.sokolov.telepager.feature.permissions.navigation.navigateToPermissions
+import ag.sokolov.telepager.feature.permissions.navigation.permissionsScreen
 import ag.sokolov.telepager.ui.TelepagerAppState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,13 +22,15 @@ fun TelepagerNavHost(
 ) {
     val navController = appState.navController
 
+
     NavHost(
         navController = navController,
         startDestination = TelepagerNavigation,
         modifier = modifier
     ) {
         navigation<TelepagerNavigation>(startDestination = HomeScreenRoute) {
-            homeScreen()
+            homeScreen(onNavigateToPermissions = navController::navigateToPermissions)
+            permissionsScreen(onBackClick = navController::popBackStack)
         }
     }
 }

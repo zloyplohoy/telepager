@@ -31,6 +31,7 @@ dependencies {
     implementation(projects.core.designsystem)
 
     implementation(projects.feature.home)
+    implementation(projects.feature.permissions)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)

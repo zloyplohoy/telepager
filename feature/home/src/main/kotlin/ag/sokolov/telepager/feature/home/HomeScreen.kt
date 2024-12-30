@@ -28,15 +28,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToPermissions: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
-    HomeScreen(state = state)
+    HomeScreen(
+        state = state,
+        onNavigateToPermissions = onNavigateToPermissions
+    )
 }
 
 @Composable
 internal fun HomeScreen(
     state: HomeScreenState,
+    onNavigateToPermissions: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -67,7 +72,7 @@ internal fun HomeScreen(
                         onClick = { TODO("Not yet implemented") }
                     )
                     PermissionsMenuItem(
-                        onClick = { TODO("Not yet implemented") }
+                        onClick = onNavigateToPermissions
                     )
                 }
             }
@@ -80,7 +85,10 @@ internal fun HomeScreen(
 private fun PreviewHomeScreenNotConfigured() {
     TelepagerTheme {
         Surface {
-            HomeScreen(HomeScreenState())
+            HomeScreen(
+                state = HomeScreenState(),
+                onNavigateToPermissions = {}
+            )
         }
     }
 }
@@ -91,7 +99,7 @@ private fun PreviewHomeScreenConfigured() {
     TelepagerTheme {
         Surface {
             HomeScreen(
-                HomeScreenState(
+                state = HomeScreenState(
                     bot = Bot(
                         isTokenValid = true,
                         name = "A beautiful bot name",
@@ -120,7 +128,8 @@ private fun PreviewHomeScreenConfigured() {
                             isBotBlocked = false
                         )
                     )
-                )
+                ),
+                onNavigateToPermissions = {}
             )
         }
     }

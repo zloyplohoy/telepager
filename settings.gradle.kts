@@ -35,3 +35,4 @@ include(":core:result")
 include(":core:telegram")
 
 include(":feature:home")
+include(":feature:permissions")
