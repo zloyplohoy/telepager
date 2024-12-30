@@ -8,9 +8,9 @@ android {
 }
 
 dependencies{
+    implementation(projects.core.concurrency)
     implementation(projects.core.data)
     implementation(projects.core.database)
     implementation(projects.core.designsystem)
     implementation(projects.core.telegram)
-    implementation(project(":core:concurrency"))
 }
