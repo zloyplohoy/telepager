@@ -28,17 +28,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onBackClick: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
-    HomeScreen(state = state, onBackClick = onBackClick)
+    HomeScreen(state = state)
 }
 
 @Composable
 internal fun HomeScreen(
     state: HomeScreenState,
-    onBackClick: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -46,7 +44,6 @@ internal fun HomeScreen(
     ) {
         TelepagerScreenTitle(
             title = "Telepager",
-            onBackClick = onBackClick,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Column(

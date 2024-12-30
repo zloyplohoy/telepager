@@ -30,11 +30,11 @@ android {
 dependencies {
     implementation(projects.core.designsystem)
 
-    implementation(projects.feature.servicemenu)
+    implementation(projects.feature.home)
 
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.activity.compose)
-
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 }
