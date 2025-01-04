@@ -28,12 +28,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToBot: () -> Unit,
     onNavigateToPermissions: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
     HomeScreen(
         state = state,
+        onNavigateToBot = onNavigateToBot,
         onNavigateToPermissions = onNavigateToPermissions
     )
 }
@@ -41,6 +43,7 @@ fun HomeScreen(
 @Composable
 internal fun HomeScreen(
     state: HomeScreenState,
+    onNavigateToBot: () -> Unit,
     onNavigateToPermissions: () -> Unit,
 ) {
     Column(
@@ -65,7 +68,7 @@ internal fun HomeScreen(
                 ) {
                     BotMenuItem(
                         state = state.bot,
-                        onClick = { TODO("Not yet implemented") }
+                        onClick = onNavigateToBot
                     )
                     RecipientsMenuItem(
                         state = state.recipients,
@@ -87,6 +90,7 @@ private fun PreviewHomeScreenNotConfigured() {
         Surface {
             HomeScreen(
                 state = HomeScreenState(),
+                onNavigateToBot = {},
                 onNavigateToPermissions = {}
             )
         }
@@ -129,6 +133,7 @@ private fun PreviewHomeScreenConfigured() {
                         )
                     )
                 ),
+                onNavigateToBot = {},
                 onNavigateToPermissions = {}
             )
         }

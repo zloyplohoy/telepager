@@ -1,5 +1,7 @@
 package ag.sokolov.telepager.navigation
 
+import ag.sokolov.telepager.feature.bot.navigation.botScreen
+import ag.sokolov.telepager.feature.bot.navigation.navigateToBot
 import ag.sokolov.telepager.feature.home.navigation.HomeScreenRoute
 import ag.sokolov.telepager.feature.home.navigation.homeScreen
 import ag.sokolov.telepager.feature.permissions.navigation.navigateToPermissions
@@ -32,7 +34,10 @@ fun TelepagerNavHost(
         popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right) + fadeOut() }
     ) {
         navigation<TelepagerNavigation>(startDestination = HomeScreenRoute) {
-            homeScreen(onNavigateToPermissions = navController::navigateToPermissions)
+            homeScreen(
+                onNavigateToBot = navController::navigateToBot,
+                onNavigateToPermissions = navController::navigateToPermissions)
+            botScreen(onBackClick = navController::popBackStack)
             permissionsScreen(onBackClick = navController::popBackStack)
         }
     }

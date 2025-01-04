@@ -4,6 +4,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Checklist
+import androidx.compose.material.icons.rounded.ContentPaste
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.Group
 import androidx.compose.material.icons.rounded.Send
@@ -16,4 +18,6 @@ object TelepagerIcons {
     val Error = Icons.Rounded.Error
     val Group = Icons.Rounded.Group
     val Back = Icons.AutoMirrored.Rounded.ArrowBack
+    val Paste = Icons.Rounded.ContentPaste
+    val Delete = Icons.Rounded.Delete
 }

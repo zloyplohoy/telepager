@@ -8,8 +8,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 object HomeScreenRoute
 
-fun NavGraphBuilder.homeScreen(onNavigateToPermissions: () -> Unit) {
+fun NavGraphBuilder.homeScreen(
+    onNavigateToBot: () -> Unit,
+    onNavigateToPermissions: () -> Unit
+) {
     composable<HomeScreenRoute> {
-        HomeScreen(onNavigateToPermissions = onNavigateToPermissions)
+        HomeScreen(
+            onNavigateToBot = onNavigateToBot,
+            onNavigateToPermissions = onNavigateToPermissions
+        )
     }
 }

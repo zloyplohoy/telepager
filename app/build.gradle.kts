@@ -30,6 +30,7 @@ android {
 dependencies {
     implementation(projects.core.designsystem)
 
+    implementation(projects.feature.bot)
     implementation(projects.feature.home)
     implementation(projects.feature.permissions)
 
