@@ -3,7 +3,6 @@ package ag.sokolov.telepager.feature.home.component
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
 import ag.sokolov.telepager.core.model.Bot
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,8 +22,7 @@ internal fun BotListItem(
 ) {
     ListItem(
         modifier = Modifier
-            .clip(RoundedCornerShape(4.dp))
-            .clickable { onDeleteBot() },
+            .clip(RoundedCornerShape(4.dp)),
         leadingContent = {
             Icon(
                 imageVector = TelepagerIcons.TelegramBot,
