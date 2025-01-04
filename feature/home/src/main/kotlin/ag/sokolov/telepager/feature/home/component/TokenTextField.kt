@@ -24,6 +24,7 @@ fun TokenTextField(
         value = value,
         onValueChange = onValueChange,
         visualTransformation = PasswordVisualTransformation(),
+        singleLine = true,
         shape = RoundedCornerShape(percent = 50),
         label = {
             Text(text = "Telegram bot API token")
