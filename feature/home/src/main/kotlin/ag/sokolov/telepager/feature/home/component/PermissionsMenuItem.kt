@@ -52,25 +52,25 @@ internal fun PermissionsMenuItem(
             Text(text = "Permissions")
         },
         supportingContent = {
-            Text(text = getSupportingText(isSmsPermissionGranted))
+            Text(text = getPermissionsMenuItemSupportingText(isSmsPermissionGranted))
         },
         trailingContent = {
             Icon(
-                imageVector = getTrailingIcon(isSmsPermissionGranted),
+                imageVector = getPermissionsMenuItemTrailingIcon(isSmsPermissionGranted),
                 contentDescription = null
             )
         }
     )
 }
 
-fun getSupportingText(isSmsPermissionGranted: Boolean): String =
+fun getPermissionsMenuItemSupportingText(isSmsPermissionGranted: Boolean): String =
     if (isSmsPermissionGranted) {
         "All permissions granted"
     } else {
         "Cannot access SMS messages"
     }
 
-internal fun getTrailingIcon(isSmsPermissionGranted: Boolean): ImageVector =
+internal fun getPermissionsMenuItemTrailingIcon(isSmsPermissionGranted: Boolean): ImageVector =
     if (isSmsPermissionGranted) TelepagerIcons.CheckCircle else TelepagerIcons.Error
 
 @Preview

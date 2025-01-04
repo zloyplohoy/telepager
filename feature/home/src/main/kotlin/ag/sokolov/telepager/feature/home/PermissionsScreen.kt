@@ -1,8 +1,9 @@
-package ag.sokolov.telepager.feature.permissions
+package ag.sokolov.telepager.feature.home
 
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
-import ag.sokolov.telepager.feature.permissions.component.SmsPermissionItem
+import ag.sokolov.telepager.feature.home.component.SmsPermissionItem
+import android.Manifest
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,8 +28,8 @@ fun PermissionsScreen(
 ) {
     val smsPermissionState = rememberMultiplePermissionsState(
         listOf(
-            android.Manifest.permission.RECEIVE_SMS,
-            android.Manifest.permission.READ_SMS
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.READ_SMS
         )
     )
 

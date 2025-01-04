@@ -34,6 +34,4 @@ include(":core:model")
 include(":core:result")
 include(":core:telegram")
 
-include(":feature:bot")
 include(":feature:home")
-include(":feature:permissions")

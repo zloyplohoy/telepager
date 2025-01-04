@@ -35,12 +35,12 @@ internal fun BotMenuItem(
             Text(text = "Telegram Bot")
         },
         supportingContent = {
-            getSupportingText(state)?.let {
+            getBotMenuItemSupportingText(state)?.let {
                 Text(text = it)
             }
         },
         trailingContent = {
-            getTrailingIcon(state)?.let {
+            getBotMenuItemTrailingIcon(state)?.let {
                 Icon(
                     imageVector = it,
                     contentDescription = null
@@ -50,10 +50,10 @@ internal fun BotMenuItem(
     )
 }
 
-internal fun getSupportingText(bot: Bot?): String? =
+internal fun getBotMenuItemSupportingText(bot: Bot?): String? =
     bot?.let { if (it.isTokenValid) bot.name else "Bot token invalid" }
 
-internal fun getTrailingIcon(bot: Bot?): ImageVector? =
+internal fun getBotMenuItemTrailingIcon(bot: Bot?): ImageVector? =
     bot?.let { if (it.isTokenValid) TelepagerIcons.CheckCircle else TelepagerIcons.Error }
 
 @Preview

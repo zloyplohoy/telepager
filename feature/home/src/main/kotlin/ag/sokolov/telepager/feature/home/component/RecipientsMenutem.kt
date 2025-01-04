@@ -35,12 +35,12 @@ internal fun RecipientsMenuItem(
             Text(text = "Recipients")
         },
         supportingContent = {
-            getSupportingText(state)?.let {
+            getRecipientsMenuItemSupportingText(state)?.let {
                 Text(text = it)
             }
         },
         trailingContent = {
-            getTrailingIcon(state)?.let {
+            getRecipientsMenuItemTrailingIcon(state)?.let {
                 Icon(
                     imageVector = it,
                     contentDescription = null
@@ -50,7 +50,7 @@ internal fun RecipientsMenuItem(
     )
 }
 
-internal fun getSupportingText(recipientList: List<Recipient>): String? =
+internal fun getRecipientsMenuItemSupportingText(recipientList: List<Recipient>): String? =
     when {
         recipientList.isEmpty() -> null
         recipientList.any { it.isBotBlocked } -> "Some recipients have blocked the bot"
@@ -63,7 +63,7 @@ internal fun getFirstRecipientName(recipientList: List<Recipient>): String? =
         this.lastName?.let { "${this.firstName} ${this.lastName}" } ?: this.firstName
     }
 
-internal fun getTrailingIcon(recipientList: List<Recipient>): ImageVector? =
+internal fun getRecipientsMenuItemTrailingIcon(recipientList: List<Recipient>): ImageVector? =
     when {
         recipientList.isEmpty() -> null
         recipientList.any { it.isBotBlocked } -> TelepagerIcons.Error

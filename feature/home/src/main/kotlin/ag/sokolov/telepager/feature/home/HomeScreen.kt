@@ -24,27 +24,26 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToBot: () -> Unit,
-    onNavigateToPermissions: () -> Unit,
+    onNavigateToBotScreen: () -> Unit,
+    onNavigateToPermissionsScreen: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
     HomeScreen(
         state = state,
-        onNavigateToBot = onNavigateToBot,
-        onNavigateToPermissions = onNavigateToPermissions
+        onNavigateToBotScreen = onNavigateToBotScreen,
+        onNavigateToPermissionsScreen = onNavigateToPermissionsScreen
     )
 }
 
 @Composable
 internal fun HomeScreen(
     state: HomeScreenState,
-    onNavigateToBot: () -> Unit,
-    onNavigateToPermissions: () -> Unit,
+    onNavigateToBotScreen: () -> Unit,
+    onNavigateToPermissionsScreen: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -68,14 +67,14 @@ internal fun HomeScreen(
                 ) {
                     BotMenuItem(
                         state = state.bot,
-                        onClick = onNavigateToBot
+                        onClick = onNavigateToBotScreen
                     )
                     RecipientsMenuItem(
                         state = state.recipients,
                         onClick = { TODO("Not yet implemented") }
                     )
                     PermissionsMenuItem(
-                        onClick = onNavigateToPermissions
+                        onClick = onNavigateToPermissionsScreen
                     )
                 }
             }
@@ -90,8 +89,8 @@ private fun PreviewHomeScreenNotConfigured() {
         Surface {
             HomeScreen(
                 state = HomeScreenState(),
-                onNavigateToBot = {},
-                onNavigateToPermissions = {}
+                onNavigateToBotScreen = {},
+                onNavigateToPermissionsScreen = {}
             )
         }
     }
@@ -133,8 +132,8 @@ private fun PreviewHomeScreenConfigured() {
                         )
                     )
                 ),
-                onNavigateToBot = {},
-                onNavigateToPermissions = {}
+                onNavigateToBotScreen = {},
+                onNavigateToPermissionsScreen = {}
             )
         }
     }

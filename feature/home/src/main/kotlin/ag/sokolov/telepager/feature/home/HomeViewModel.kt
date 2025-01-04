@@ -8,11 +8,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    botRepository: BotRepository,
+    private val botRepository: BotRepository,
     recipientRepository: RecipientRepository,
 ) : ViewModel() {
     val stateFlow = combine(
@@ -29,4 +30,6 @@ class HomeViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = HomeScreenState()
         )
+
+    fun deleteBot() = viewModelScope.launch { botRepository.deleteBot() }
 }

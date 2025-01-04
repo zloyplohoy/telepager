@@ -1,10 +1,10 @@
-package ag.sokolov.telepager.feature.bot
+package ag.sokolov.telepager.feature.home
 
 import TokenTextField
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
 import ag.sokolov.telepager.core.model.Bot
-import ag.sokolov.telepager.feature.bot.components.BotListItem
+import ag.sokolov.telepager.feature.home.component.BotListItem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,13 +24,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun BotScreen(
-    viewModel: BotViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
     BotScreen(
-        state = state,
+        state = state.bot,
         onBackClick = onBackClick,
         onAddBot = {},
         onDeleteBot = viewModel::deleteBot

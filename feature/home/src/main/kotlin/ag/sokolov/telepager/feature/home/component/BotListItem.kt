@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.feature.bot.components
+package ag.sokolov.telepager.feature.home.component
 
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme

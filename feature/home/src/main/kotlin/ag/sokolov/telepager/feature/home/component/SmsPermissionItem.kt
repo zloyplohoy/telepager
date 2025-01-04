@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.feature.permissions.component
+package ag.sokolov.telepager.feature.home.component
 
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import androidx.compose.foundation.clickable
@@ -34,21 +34,21 @@ internal fun SmsPermissionItem(
             Text(text = "Read SMS messages")
         },
         supportingContent = {
-            Text(text = getSupportingText(isGranted))
+            Text(text = getSmsPermissionItemSupportingText(isGranted))
         },
         trailingContent = {
             Icon(
-                imageVector = getTrailingIcon(isGranted),
+                imageVector = getSmsPermissionItemTrailingIcon(isGranted),
                 contentDescription = null
             )
         }
     )
 }
 
-fun getSupportingText(isGranted: Boolean): String =
+fun getSmsPermissionItemSupportingText(isGranted: Boolean): String =
     if (isGranted) "Granted" else "Click to request permission"
 
-internal fun getTrailingIcon(isGranted: Boolean): ImageVector =
+internal fun getSmsPermissionItemTrailingIcon(isGranted: Boolean): ImageVector =
     if (isGranted) TelepagerIcons.CheckCircle else TelepagerIcons.Error
 
 @Preview
