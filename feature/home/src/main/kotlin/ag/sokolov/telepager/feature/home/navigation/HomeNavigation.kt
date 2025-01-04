@@ -2,7 +2,9 @@ package ag.sokolov.telepager.feature.home.navigation
 
 import ag.sokolov.telepager.feature.home.BotScreen
 import ag.sokolov.telepager.feature.home.HomeScreen
+import ag.sokolov.telepager.feature.home.HomeViewModel
 import ag.sokolov.telepager.feature.home.PermissionsScreen
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -23,17 +25,15 @@ object BotScreenRoute
 @Serializable
 object PermissionsScreenRoute
 
-fun NavGraphBuilder.homeNavGraph(navController: NavHostController) =
+fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
     navigation<HomeNavGraphRoute>(
         startDestination = HomeScreenRoute
     ) {
-        homeScreen(
-            onNavigateToBotScreen = navController::navigateToBotScreen,
-            onNavigateToPermissionsScreen = navController::navigateToPermissionsScreen
-        )
-        botScreen(onBackClick = navController::popBackStack)
-        permissionsScreen(onBackClick = navController::popBackStack)
+        homeScreen(navController = navController)
+        botScreen(navController = navController)
+        permissionsScreen(navController = navController)
     }
+}
 
 fun NavController.navigateToBotScreen(navOptions: NavOptions? = null) =
     navigate(BotScreenRoute, navOptions)
@@ -42,26 +42,35 @@ fun NavController.navigateToPermissionsScreen(navOptions: NavOptions? = null) =
     navigate(PermissionsScreenRoute, navOptions)
 
 fun NavGraphBuilder.homeScreen(
-    onNavigateToBotScreen: () -> Unit,
-    onNavigateToPermissionsScreen: () -> Unit,
+    navController: NavHostController,
 ) =
     composable<HomeScreenRoute> {
+        val viewModel: HomeViewModel =
+            hiltViewModel(navController.getBackStackEntry(HomeNavGraphRoute))
+
         HomeScreen(
-            onNavigateToBotScreen = onNavigateToBotScreen,
-            onNavigateToPermissionsScreen = onNavigateToPermissionsScreen
+            viewModel = viewModel,
+            onNavigateToBotScreen = navController::navigateToBotScreen,
+            onNavigateToPermissionsScreen = navController::navigateToPermissionsScreen
         )
     }
 
 fun NavGraphBuilder.botScreen(
-    onBackClick: () -> Unit,
+    navController: NavHostController,
 ) =
     composable<BotScreenRoute> {
-        BotScreen(onBackClick = onBackClick)
+        val viewModel: HomeViewModel =
+            hiltViewModel(navController.getBackStackEntry(HomeNavGraphRoute))
+
+        BotScreen(
+            viewModel = viewModel,
+            onBackClick = navController::popBackStack
+        )
     }
 
 fun NavGraphBuilder.permissionsScreen(
-    onBackClick: () -> Unit,
+    navController: NavHostController,
 ) =
     composable<PermissionsScreenRoute> {
-        PermissionsScreen(onBackClick = onBackClick)
+        PermissionsScreen(onBackClick = navController::popBackStack)
     }
