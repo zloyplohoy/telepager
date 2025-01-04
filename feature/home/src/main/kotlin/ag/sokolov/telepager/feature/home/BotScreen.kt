@@ -29,7 +29,7 @@ fun BotScreen(
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
     BotScreen(
-        state = state.bot,
+        state = state,
         onBackClick = onBackClick,
         onAddBot = viewModel::addBot,
         onDeleteBot = viewModel::deleteBot
@@ -38,7 +38,7 @@ fun BotScreen(
 
 @Composable
 internal fun BotScreen(
-    state: Bot?,
+    state: HomeScreenState,
     onBackClick: () -> Unit,
     onAddBot: (String) -> Unit,
     onDeleteBot: () -> Unit,
@@ -71,7 +71,7 @@ internal fun BotScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            if (state == null) {
+            if (state.bot == null) {
                 TokenTextField(
                     value = token,
                     onValueChange = ::setToken,
@@ -82,7 +82,7 @@ internal fun BotScreen(
                 )
             } else {
                 BotListItem(
-                    bot = state,
+                    bot = state.bot,
                     onDeleteBot = onDeleteBot
                 )
             }
@@ -96,10 +96,12 @@ private fun PreviewBotScreen() {
     TelepagerTheme {
         Surface {
             BotScreen(
-                state = Bot(
-                    isTokenValid = true,
-                    name = "A beautiful bot name",
-                    username = "a_beautiful_bot"
+                state = HomeScreenState(
+                    Bot(
+                        isTokenValid = true,
+                        name = "A beautiful bot name",
+                        username = "a_beautiful_bot"
+                    )
                 ),
                 onBackClick = {},
                 onAddBot = {},
@@ -115,7 +117,9 @@ private fun PreviewBotScreenNoBot() {
     TelepagerTheme {
         Surface {
             BotScreen(
-                state = null,
+                state = HomeScreenState(
+                    bot = null
+                ),
                 onBackClick = {},
                 onAddBot = {},
                 onDeleteBot = {}
