@@ -31,5 +31,7 @@ class HomeViewModel @Inject constructor(
             initialValue = HomeScreenState()
         )
 
+    fun addBot(token: String) = viewModelScope.launch { botRepository.addBot(token) }
+
     fun deleteBot() = viewModelScope.launch { botRepository.deleteBot() }
 }

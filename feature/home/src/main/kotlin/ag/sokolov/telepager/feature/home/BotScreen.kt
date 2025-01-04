@@ -31,7 +31,7 @@ fun BotScreen(
     BotScreen(
         state = state.bot,
         onBackClick = onBackClick,
-        onAddBot = {},
+        onAddBot = viewModel::addBot,
         onDeleteBot = viewModel::deleteBot
     )
 }
@@ -45,14 +45,16 @@ internal fun BotScreen(
 ) {
     val clipboardManager = LocalClipboardManager.current
     var token by remember { mutableStateOf("") }
+    val telegramApiTokenRegex = Regex("""^\d{10}:[A-Za-z0-9_-]{35}$""")
 
     fun setToken(value: String) {
         token = value
+        if (telegramApiTokenRegex.matches(token)) {
+            onAddBot(token)
+        }
     }
 
-    fun pasteToken() {
-        token = clipboardManager.getText()?.text ?: token
-    }
+    fun pasteToken() = setToken(clipboardManager.getText()?.text ?: token)
 
     Column(
         modifier = Modifier
