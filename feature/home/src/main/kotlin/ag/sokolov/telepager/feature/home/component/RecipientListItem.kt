@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun RecipientListItem(
     recipient: Recipient,
     onDeleteRecipient: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ListItem(
         modifier = modifier
@@ -31,11 +32,19 @@ fun RecipientListItem(
             )
         },
         headlineContent = {
-            Text(text = recipient.getFullName())
+            Text(
+                text = recipient.getFullName(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         },
         supportingContent = {
             recipient.username?.let {
-                Text(text = "@$it")
+                Text(
+                    text = "@$it",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         },
         trailingContent = {
@@ -104,6 +113,25 @@ private fun PreviewRecipientListItemFullNameUsername() {
                     firstName = "Konstantin",
                     lastName = "Konstantinopolskii",
                     username = "konstantinos",
+                    isBotBlocked = false
+                ),
+                onDeleteRecipient = {}
+            )
+        }
+    }
+}
+
+@Preview(widthDp = 300)
+@Composable
+private fun PreviewRecipientListItemFullNameUsernameNarrow() {
+    TelepagerTheme {
+        Surface {
+            RecipientListItem(
+                recipient = Recipient(
+                    id = 0,
+                    firstName = "Konstantin",
+                    lastName = "Konstantinopolskii",
+                    username = "konstantinosyesthatisme",
                     isBotBlocked = false
                 ),
                 onDeleteRecipient = {}
