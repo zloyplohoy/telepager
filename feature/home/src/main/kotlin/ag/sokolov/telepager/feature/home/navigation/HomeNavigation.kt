@@ -4,6 +4,7 @@ import ag.sokolov.telepager.feature.home.BotScreen
 import ag.sokolov.telepager.feature.home.HomeScreen
 import ag.sokolov.telepager.feature.home.HomeViewModel
 import ag.sokolov.telepager.feature.home.PermissionsScreen
+import ag.sokolov.telepager.feature.home.RecipientsScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -23,6 +24,9 @@ object HomeScreenRoute
 object BotScreenRoute
 
 @Serializable
+object RecipientsScreenRoute
+
+@Serializable
 object PermissionsScreenRoute
 
 fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
@@ -31,12 +35,16 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
     ) {
         homeScreen(navController = navController)
         botScreen(navController = navController)
+        recipientsScreen(navController = navController)
         permissionsScreen(navController = navController)
     }
 }
 
 fun NavController.navigateToBotScreen(navOptions: NavOptions? = null) =
     navigate(BotScreenRoute, navOptions)
+
+fun NavController.navigateToRecipientsScreen(navOptions: NavOptions? = null) =
+    navigate(RecipientsScreenRoute, navOptions)
 
 fun NavController.navigateToPermissionsScreen(navOptions: NavOptions? = null) =
     navigate(PermissionsScreenRoute, navOptions)
@@ -51,6 +59,7 @@ fun NavGraphBuilder.homeScreen(
         HomeScreen(
             viewModel = viewModel,
             onNavigateToBotScreen = navController::navigateToBotScreen,
+            onNavigateToRecipientsScreen = navController::navigateToRecipientsScreen,
             onNavigateToPermissionsScreen = navController::navigateToPermissionsScreen
         )
     }
@@ -63,6 +72,19 @@ fun NavGraphBuilder.botScreen(
             hiltViewModel(navController.getBackStackEntry(HomeNavGraphRoute))
 
         BotScreen(
+            viewModel = viewModel,
+            onBackClick = navController::popBackStack
+        )
+    }
+
+fun NavGraphBuilder.recipientsScreen(
+    navController: NavHostController,
+) =
+    composable<RecipientsScreenRoute> {
+        val viewModel: HomeViewModel =
+            hiltViewModel(navController.getBackStackEntry(HomeNavGraphRoute))
+
+        RecipientsScreen(
             viewModel = viewModel,
             onBackClick = navController::popBackStack
         )

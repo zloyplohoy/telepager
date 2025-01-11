@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val botRepository: BotRepository,
-    recipientRepository: RecipientRepository,
+    private val recipientRepository: RecipientRepository,
 ) : ViewModel() {
     val stateFlow = combine(
         botRepository.getBot(),
@@ -34,4 +34,7 @@ class HomeViewModel @Inject constructor(
     fun addBot(token: String) = viewModelScope.launch { botRepository.addBot(token) }
 
     fun deleteBot() = viewModelScope.launch { botRepository.deleteBot() }
+
+    fun deleteRecipient(id: Long) =
+        viewModelScope.launch { recipientRepository.deleteRecipient(id) }
 }

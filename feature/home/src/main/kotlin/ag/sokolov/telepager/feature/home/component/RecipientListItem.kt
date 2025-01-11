@@ -1,0 +1,113 @@
+package ag.sokolov.telepager.feature.home.component
+
+import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
+import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
+import ag.sokolov.telepager.core.model.Recipient
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun RecipientListItem(
+    recipient: Recipient,
+    onDeleteRecipient: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ListItem(
+        modifier = modifier
+            .clip(RoundedCornerShape(4.dp)),
+        leadingContent = {
+            Icon(
+                imageVector = TelepagerIcons.Person,
+                contentDescription = null
+            )
+        },
+        headlineContent = {
+            Text(text = recipient.getFullName())
+        },
+        supportingContent = {
+            recipient.username?.let {
+                Text(text = "@$it")
+            }
+        },
+        trailingContent = {
+            IconButton(
+                onClick = onDeleteRecipient
+            ) {
+                Icon(
+                    imageVector = TelepagerIcons.Delete,
+                    contentDescription = null
+                )
+            }
+        }
+    )
+}
+
+fun Recipient.getFullName() =
+    if (this.lastName == null) {
+        this.firstName
+    } else {
+        "${this.firstName} ${this.lastName}"
+    }
+
+@Preview
+@Composable
+private fun PreviewRecipientListItemFirstName() {
+    TelepagerTheme {
+        Surface {
+            RecipientListItem(
+                recipient = Recipient(
+                    id = 0,
+                    firstName = "Konstantin",
+                    isBotBlocked = false
+                ),
+                onDeleteRecipient = {}
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewRecipientListItemFullName() {
+    TelepagerTheme {
+        Surface {
+            RecipientListItem(
+                recipient = Recipient(
+                    id = 0,
+                    firstName = "Konstantin",
+                    lastName = "Konstantinopolskii",
+                    isBotBlocked = false
+                ),
+                onDeleteRecipient = {}
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewRecipientListItemFullNameUsername() {
+    TelepagerTheme {
+        Surface {
+            RecipientListItem(
+                recipient = Recipient(
+                    id = 0,
+                    firstName = "Konstantin",
+                    lastName = "Konstantinopolskii",
+                    username = "konstantinos",
+                    isBotBlocked = false
+                ),
+                onDeleteRecipient = {}
+            )
+        }
+    }
+}

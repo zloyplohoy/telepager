@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToBotScreen: () -> Unit,
+    onNavigateToRecipientsScreen: () -> Unit,
     onNavigateToPermissionsScreen: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
@@ -34,6 +35,7 @@ fun HomeScreen(
     HomeScreen(
         state = state,
         onNavigateToBotScreen = onNavigateToBotScreen,
+        onNavigateToRecipientsScreen = onNavigateToRecipientsScreen,
         onNavigateToPermissionsScreen = onNavigateToPermissionsScreen
     )
 }
@@ -42,6 +44,7 @@ fun HomeScreen(
 internal fun HomeScreen(
     state: HomeScreenState,
     onNavigateToBotScreen: () -> Unit,
+    onNavigateToRecipientsScreen: () -> Unit,
     onNavigateToPermissionsScreen: () -> Unit,
 ) {
     Column(
@@ -70,7 +73,7 @@ internal fun HomeScreen(
                     )
                     RecipientsMenuItem(
                         state = state.recipients,
-                        onClick = { TODO("Not yet implemented") }
+                        onClick = onNavigateToRecipientsScreen
                     )
                     PermissionsMenuItem(
                         onClick = onNavigateToPermissionsScreen
@@ -89,6 +92,7 @@ private fun PreviewHomeScreenNotConfigured() {
             HomeScreen(
                 state = HomeScreenState(),
                 onNavigateToBotScreen = {},
+                onNavigateToRecipientsScreen = {},
                 onNavigateToPermissionsScreen = {}
             )
         }
@@ -132,6 +136,7 @@ private fun PreviewHomeScreenConfigured() {
                     )
                 ),
                 onNavigateToBotScreen = {},
+                onNavigateToRecipientsScreen = {},
                 onNavigateToPermissionsScreen = {}
             )
         }
