@@ -3,6 +3,9 @@ package ag.sokolov.telepager.feature.home.component
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
 import ag.sokolov.telepager.core.model.Recipient
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -35,8 +38,13 @@ internal fun RecipientsMenuItem(
             Text(text = "Recipients")
         },
         supportingContent = {
-            getRecipientsMenuItemSupportingText(state)?.let {
-                Text(text = it)
+            AnimatedVisibility(
+                visible = showRecipientsMenuItemSupportingText(state),
+                enter = fadeIn() + expandVertically()
+            ) {
+                getRecipientsMenuItemSupportingText(state)?.let {
+                    Text(text = it)
+                }
             }
         },
         trailingContent = {
@@ -49,6 +57,9 @@ internal fun RecipientsMenuItem(
         }
     )
 }
+
+internal fun showRecipientsMenuItemSupportingText(recipientList: List<Recipient>): Boolean =
+    recipientList.isNotEmpty()
 
 internal fun getRecipientsMenuItemSupportingText(recipientList: List<Recipient>): String? =
     when {

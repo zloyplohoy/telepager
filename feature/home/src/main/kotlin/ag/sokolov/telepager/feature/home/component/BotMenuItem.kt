@@ -3,6 +3,9 @@ package ag.sokolov.telepager.feature.home.component
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
 import ag.sokolov.telepager.core.model.Bot
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -35,8 +38,13 @@ internal fun BotMenuItem(
             Text(text = "Telegram Bot")
         },
         supportingContent = {
-            getBotMenuItemSupportingText(state)?.let {
-                Text(text = it)
+            AnimatedVisibility(
+                visible = showBotMenuItemSupportingText(state),
+                enter = fadeIn() + expandVertically()
+            ) {
+                getBotMenuItemSupportingText(state)?.let {
+                    Text(text = it)
+                }
             }
         },
         trailingContent = {
@@ -49,6 +57,9 @@ internal fun BotMenuItem(
         }
     )
 }
+
+internal fun showBotMenuItemSupportingText(bot: Bot?): Boolean =
+    bot != null
 
 internal fun getBotMenuItemSupportingText(bot: Bot?): String? =
     bot?.let { if (it.isTokenValid) bot.name else "Bot token invalid" }
