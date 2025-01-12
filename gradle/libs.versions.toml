@@ -2,7 +2,7 @@
 accompanist = "0.37.0"
 activityCompose = "1.9.3"
 androidDesugarJdkLibs = "2.1.4"
-androidGradlePlugin = "8.7.3"
+androidGradlePlugin = "8.8.0"
 composeBom = "2024.12.01"
 composeNavigation = "2.8.5"
 coreKtx = "1.15.0"
