@@ -4,11 +4,15 @@ import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
 import ag.sokolov.telepager.core.model.Recipient
 import ag.sokolov.telepager.feature.home.component.RecipientListItem
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import qrgenerator.qrkitpainter.rememberQrKitPainter
 
 @Composable
 fun RecipientsScreen(
@@ -27,10 +33,14 @@ fun RecipientsScreen(
     onBackClick: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
+    val registrationState by viewModel.recipientRegistrationStateFlow.collectAsStateWithLifecycle()
 
     RecipientsScreen(
         state = state,
+        registrationState = registrationState,
         onBackClick = onBackClick,
+        onAddRecipient = viewModel::startRecipientRegistration,
+        onDismissRecipientRegistration = viewModel::stopRecipientRegistration,
         onDeleteRecipient = viewModel::deleteRecipient
     )
 }
@@ -38,9 +48,30 @@ fun RecipientsScreen(
 @Composable
 internal fun RecipientsScreen(
     state: HomeScreenState,
+    registrationState: RegistrationState,
     onBackClick: () -> Unit,
+    onAddRecipient: () -> Unit,
+    onDismissRecipientRegistration: () -> Unit,
     onDeleteRecipient: (Long) -> Unit,
 ) {
+
+    if (registrationState.showRegistration) {
+        val registrationQrCodePainter = rememberQrKitPainter(data = registrationState.tgUrl!!)
+        Dialog(
+            onDismissRequest = onDismissRecipientRegistration,
+        ) {
+            Card {
+                Image(
+                    painter = registrationQrCodePainter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(256.dp)
+                        .padding(32.dp)
+                )
+            }
+
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +82,9 @@ internal fun RecipientsScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         ListItem(
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clickable { onAddRecipient() },
             headlineContent = { Text("Add recipient") },
             leadingContent = {
                 Icon(
@@ -106,6 +139,50 @@ private fun PreviewRecipientsScreen() {
                         )
                     )
                 ),
+                registrationState = RegistrationState(),
+                onBackClick = {},
+                onAddRecipient = {},
+                onDismissRecipientRegistration = {},
+                onDeleteRecipient = {}
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewRecipientsScreenRegistrationStarted() {
+    TelepagerTheme {
+        Surface {
+            RecipientsScreen(
+                state = HomeScreenState(
+                    recipients = listOf(
+                        Recipient(
+                            id = 0,
+                            firstName = "Konstantin",
+                            lastName = "Konstantinopolskii",
+                            username = "konstantonos",
+                            isBotBlocked = false
+                        ),
+                        Recipient(
+                            id = 0,
+                            firstName = "Aleksandra",
+                            lastName = "Chernovorotova",
+                            username = "chernovorot",
+                            isBotBlocked = false
+                        ),
+                        Recipient(
+                            id = 0,
+                            firstName = "Nikolai",
+                            lastName = "Dostoevskii-Krupenskii",
+                            username = "not_dostoevskii",
+                            isBotBlocked = false
+                        )
+                    )
+                ),
+                registrationState = RegistrationState(showRegistration = true, tgUrl = "tgUrl"),
+                onAddRecipient = {},
+                onDismissRecipientRegistration = {},
                 onBackClick = {},
                 onDeleteRecipient = {}
             )

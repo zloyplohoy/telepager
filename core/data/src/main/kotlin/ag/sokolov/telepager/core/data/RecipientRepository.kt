@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface RecipientRepository {
     fun getRecipients(): Flow<List<Recipient>>
     fun getRecipientIds(): Flow<List<Long>>
-    suspend fun addRecipient(code: String, timeoutMillis: Long): Result<Nothing, RepositoryError>
+    suspend fun registerRecipient(verificationCode: String): Result<Nothing, RepositoryError>
     suspend fun updateDetails(): Result<Nothing, RepositoryError>
     suspend fun deleteRecipient(id: Long): Result<Nothing, RepositoryError>
 }

@@ -7,9 +7,12 @@ android {
     namespace = "ag.sokolov.telepager.feature.home"
 }
 
-dependencies{
+dependencies {
+    implementation(projects.core.concurrency)
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
+    implementation(projects.core.domain)
 
     implementation(libs.accompanist.permissions)
+    implementation(libs.qrkit)
 }
