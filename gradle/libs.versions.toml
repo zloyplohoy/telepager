@@ -6,7 +6,6 @@ androidGradlePlugin = "8.8.0"
 composeBom = "2024.12.01"
 composeNavigation = "2.8.5"
 coreKtx = "1.15.0"
-datastorePreferences = "1.1.1"
 hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.21"
@@ -62,9 +61,6 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 
 # Module :core:concurrency
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
-
-# Module :core:datastore
-androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 
 # Module: :core:designsystem
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
