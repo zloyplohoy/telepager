@@ -33,6 +33,7 @@ include(":core:designsystem")
 include(":core:domain")
 include(":core:model")
 include(":core:result")
+include(":core:service")
 include(":core:telegram")
 
 include(":feature:home")
