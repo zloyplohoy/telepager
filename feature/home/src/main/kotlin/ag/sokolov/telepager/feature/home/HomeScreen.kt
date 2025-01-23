@@ -2,8 +2,8 @@ package ag.sokolov.telepager.feature.home
 
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
-import ag.sokolov.telepager.core.model.Bot
-import ag.sokolov.telepager.core.model.Recipient
+import ag.sokolov.telepager.core.model.SampleBotState
+import ag.sokolov.telepager.core.model.SampleRecipientState
 import ag.sokolov.telepager.feature.home.component.BotMenuItem
 import ag.sokolov.telepager.feature.home.component.PermissionsMenuItem
 import ag.sokolov.telepager.feature.home.component.RecipientsMenuItem
@@ -68,11 +68,11 @@ internal fun HomeScreen(
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
                     BotMenuItem(
-                        state = state.bot,
+                        botState = state.botState,
                         onClick = onNavigateToBotScreen
                     )
                     RecipientsMenuItem(
-                        state = state.recipients,
+                        recipientStateList = state.recipientStateList,
                         onClick = onNavigateToRecipientsScreen
                     )
                     PermissionsMenuItem(
@@ -106,33 +106,10 @@ private fun PreviewHomeScreenConfigured() {
         Surface {
             HomeScreen(
                 state = HomeScreenState(
-                    bot = Bot(
-                        isTokenValid = true,
-                        name = "A beautiful bot name",
-                        username = ""
-                    ),
-                    recipients = listOf(
-                        Recipient(
-                            id = 0,
-                            firstName = "Konstantin",
-                            lastName = "Konstantinopolskii",
-                            username = "",
-                            isBotBlocked = false
-                        ),
-                        Recipient(
-                            id = 0,
-                            firstName = "Konstantin",
-                            lastName = "Konstantinopolskii",
-                            username = "",
-                            isBotBlocked = false
-                        ),
-                        Recipient(
-                            id = 0,
-                            firstName = "Konstantin",
-                            lastName = "Konstantinopolskii",
-                            username = "",
-                            isBotBlocked = false
-                        )
+                    botState = SampleBotState.VALID,
+                    recipientStateList = listOf(
+                        SampleRecipientState.FULL_NAME,
+                        SampleRecipientState.FULL_NAME_AND_USERNAME,
                     )
                 ),
                 onNavigateToBotScreen = {},

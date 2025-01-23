@@ -2,7 +2,8 @@ package ag.sokolov.telepager.feature.home.component
 
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
-import ag.sokolov.telepager.core.model.Bot
+import ag.sokolov.telepager.core.model.BotState
+import ag.sokolov.telepager.core.model.SampleBotState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,7 +18,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun BotListItem(
-    bot: Bot,
+    botState: BotState,
     onDeleteBot: () -> Unit,
 ) {
     ListItem(
@@ -30,10 +31,10 @@ internal fun BotListItem(
             )
         },
         headlineContent = {
-            Text(text = bot.name)
+            Text(text = botState.bot.name)
         },
         supportingContent = {
-            Text(text = "@${bot.username}")
+            Text(text = "@${botState.bot.username}")
         },
         trailingContent = {
             IconButton(
@@ -54,11 +55,7 @@ private fun PreviewBotListItem() {
     TelepagerTheme {
         Surface {
             BotListItem(
-                bot = Bot(
-                    isTokenValid = true,
-                    name = "A beautiful bot name",
-                    username = "a_beautiful_bot_name"
-                ),
+                botState = SampleBotState.VALID,
                 onDeleteBot = {}
             )
         }

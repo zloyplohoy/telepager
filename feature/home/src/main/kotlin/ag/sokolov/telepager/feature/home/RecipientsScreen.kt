@@ -2,7 +2,7 @@ package ag.sokolov.telepager.feature.home
 
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
-import ag.sokolov.telepager.core.model.Recipient
+import ag.sokolov.telepager.core.model.SampleRecipientState
 import ag.sokolov.telepager.feature.home.component.RecipientListItem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -98,10 +98,10 @@ internal fun RecipientsScreen(
             style = MaterialTheme.typography.labelMedium,
             text = "Active recipients"
         )
-        state.recipients.forEach {
+        state.recipientStateList.forEach {
             RecipientListItem(
-                recipient = it,
-                onDeleteRecipient = { onDeleteRecipient(it.id) },
+                recipientState = it,
+                onDeleteRecipient = { onDeleteRecipient(it.recipient.id) },
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
@@ -115,28 +115,9 @@ private fun PreviewRecipientsScreen() {
         Surface {
             RecipientsScreen(
                 state = HomeScreenState(
-                    recipients = listOf(
-                        Recipient(
-                            id = 0,
-                            firstName = "Konstantin",
-                            lastName = "Konstantinopolskii",
-                            username = "konstantonos",
-                            isBotBlocked = false
-                        ),
-                        Recipient(
-                            id = 0,
-                            firstName = "Aleksandra",
-                            lastName = "Chernovorotova",
-                            username = "chernovorot",
-                            isBotBlocked = false
-                        ),
-                        Recipient(
-                            id = 0,
-                            firstName = "Nikolai",
-                            lastName = "Dostoevskii-Krupenskii",
-                            username = "not_dostoevskii",
-                            isBotBlocked = false
-                        )
+                    recipientStateList = listOf(
+                        SampleRecipientState.FULL_NAME,
+                        SampleRecipientState.FULL_NAME_AND_USERNAME
                     )
                 ),
                 registrationState = RegistrationState(),
@@ -156,28 +137,9 @@ private fun PreviewRecipientsScreenRegistrationStarted() {
         Surface {
             RecipientsScreen(
                 state = HomeScreenState(
-                    recipients = listOf(
-                        Recipient(
-                            id = 0,
-                            firstName = "Konstantin",
-                            lastName = "Konstantinopolskii",
-                            username = "konstantonos",
-                            isBotBlocked = false
-                        ),
-                        Recipient(
-                            id = 0,
-                            firstName = "Aleksandra",
-                            lastName = "Chernovorotova",
-                            username = "chernovorot",
-                            isBotBlocked = false
-                        ),
-                        Recipient(
-                            id = 0,
-                            firstName = "Nikolai",
-                            lastName = "Dostoevskii-Krupenskii",
-                            username = "not_dostoevskii",
-                            isBotBlocked = false
-                        )
+                    recipientStateList = listOf(
+                        SampleRecipientState.FULL_NAME,
+                        SampleRecipientState.FULL_NAME_AND_USERNAME
                     )
                 ),
                 registrationState = RegistrationState(showRegistration = true, tgUrl = "tgUrl"),

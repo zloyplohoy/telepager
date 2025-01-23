@@ -2,7 +2,8 @@ package ag.sokolov.telepager.feature.home.component
 
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
-import ag.sokolov.telepager.core.model.Bot
+import ag.sokolov.telepager.core.model.BotState
+import ag.sokolov.telepager.core.model.SampleBotState
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -21,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun BotMenuItem(
-    state: Bot?,
+    botState: BotState?,
     onClick: () -> Unit,
 ) {
     ListItem(
@@ -39,16 +40,16 @@ internal fun BotMenuItem(
         },
         supportingContent = {
             AnimatedVisibility(
-                visible = showBotMenuItemSupportingText(state),
+                visible = showBotMenuItemSupportingText(botState),
                 enter = fadeIn() + expandVertically()
             ) {
-                getBotMenuItemSupportingText(state)?.let {
+                getBotMenuItemSupportingText(botState)?.let {
                     Text(text = it)
                 }
             }
         },
         trailingContent = {
-            getBotMenuItemTrailingIcon(state)?.let {
+            getBotMenuItemTrailingIcon(botState)?.let {
                 Icon(
                     imageVector = it,
                     contentDescription = null
@@ -58,14 +59,14 @@ internal fun BotMenuItem(
     )
 }
 
-internal fun showBotMenuItemSupportingText(bot: Bot?): Boolean =
-    bot != null
+internal fun showBotMenuItemSupportingText(botState: BotState?): Boolean =
+    botState != null
 
-internal fun getBotMenuItemSupportingText(bot: Bot?): String? =
-    bot?.let { if (it.isTokenValid) bot.name else "Bot token invalid" }
+internal fun getBotMenuItemSupportingText(botState: BotState?): String? =
+    botState?.let { if (it.isTokenValid) it.bot.name else "Bot token invalid" }
 
-internal fun getBotMenuItemTrailingIcon(bot: Bot?): ImageVector? =
-    bot?.let { if (it.isTokenValid) TelepagerIcons.CheckCircle else TelepagerIcons.Error }
+internal fun getBotMenuItemTrailingIcon(botState: BotState?): ImageVector? =
+    botState?.let { if (it.isTokenValid) TelepagerIcons.CheckCircle else TelepagerIcons.Error }
 
 @Preview
 @Composable
@@ -73,7 +74,7 @@ private fun PreviewBotMenuItemEmpty() {
     TelepagerTheme {
         Surface {
             BotMenuItem(
-                state = null,
+                botState = null,
                 onClick = {}
             )
         }
@@ -86,11 +87,7 @@ private fun PreviewBotMenuItemValid() {
     TelepagerTheme {
         Surface {
             BotMenuItem(
-                state = Bot(
-                    isTokenValid = true,
-                    name = "A beautiful bot name",
-                    username = ""
-                ),
+                botState = SampleBotState.VALID,
                 onClick = {}
             )
         }
@@ -103,11 +100,7 @@ private fun PreviewBotMenuItemInvalid() {
     TelepagerTheme {
         Surface {
             BotMenuItem(
-                state = Bot(
-                    isTokenValid = false,
-                    name = "A beautiful bot name",
-                    username = ""
-                ),
+                botState = SampleBotState.INVALID,
                 onClick = {}
             )
         }

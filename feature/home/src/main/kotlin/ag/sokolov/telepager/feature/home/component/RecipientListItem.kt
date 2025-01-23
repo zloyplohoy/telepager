@@ -3,6 +3,8 @@ package ag.sokolov.telepager.feature.home.component
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
 import ag.sokolov.telepager.core.model.Recipient
+import ag.sokolov.telepager.core.model.RecipientState
+import ag.sokolov.telepager.core.model.SampleRecipientState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,7 +20,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RecipientListItem(
-    recipient: Recipient,
+    recipientState: RecipientState,
     onDeleteRecipient: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -33,13 +35,13 @@ fun RecipientListItem(
         },
         headlineContent = {
             Text(
-                text = recipient.getFullName(),
+                text = recipientState.recipient.getFullName(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         },
         supportingContent = {
-            recipient.username?.let {
+            recipientState.recipient.username?.let {
                 Text(
                     text = "@$it",
                     maxLines = 1,
@@ -73,11 +75,7 @@ private fun PreviewRecipientListItemFirstName() {
     TelepagerTheme {
         Surface {
             RecipientListItem(
-                recipient = Recipient(
-                    id = 0,
-                    firstName = "Konstantin",
-                    isBotBlocked = false
-                ),
+                recipientState = SampleRecipientState.NAME_ONLY,
                 onDeleteRecipient = {}
             )
         }
@@ -90,12 +88,7 @@ private fun PreviewRecipientListItemFullName() {
     TelepagerTheme {
         Surface {
             RecipientListItem(
-                recipient = Recipient(
-                    id = 0,
-                    firstName = "Konstantin",
-                    lastName = "Konstantinopolskii",
-                    isBotBlocked = false
-                ),
+                recipientState = SampleRecipientState.FULL_NAME,
                 onDeleteRecipient = {}
             )
         }
@@ -108,13 +101,7 @@ private fun PreviewRecipientListItemFullNameUsername() {
     TelepagerTheme {
         Surface {
             RecipientListItem(
-                recipient = Recipient(
-                    id = 0,
-                    firstName = "Konstantin",
-                    lastName = "Konstantinopolskii",
-                    username = "konstantinos",
-                    isBotBlocked = false
-                ),
+                recipientState = SampleRecipientState.FULL_NAME_AND_USERNAME,
                 onDeleteRecipient = {}
             )
         }
@@ -127,13 +114,7 @@ private fun PreviewRecipientListItemFullNameUsernameNarrow() {
     TelepagerTheme {
         Surface {
             RecipientListItem(
-                recipient = Recipient(
-                    id = 0,
-                    firstName = "Konstantin",
-                    lastName = "Konstantinopolskii",
-                    username = "konstantinosyesthatisme",
-                    isBotBlocked = false
-                ),
+                recipientState = SampleRecipientState.FULL_NAME_AND_USERNAME_EXTRA_LONG,
                 onDeleteRecipient = {}
             )
         }

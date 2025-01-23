@@ -8,6 +8,6 @@ android {
 }
 
 dependencies {
-    api(projects.core.data)
-    implementation(projects.core.concurrency)
+    implementation(projects.core.data)
+    implementation(projects.core.telegram)
 }

@@ -2,7 +2,10 @@ package ag.sokolov.telepager.core.database.dao
 
 import ag.sokolov.telepager.core.database.entity.BotEntity
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,53 +14,14 @@ interface BotDao {
         """
         SELECT *
         FROM bot
-        LIMIT 1
+        WHERE record_id = 0
         """
     )
     fun getBot(): Flow<BotEntity?>
 
-    @Query(
-        """
-        SELECT token
-        FROM bot
-        LIMIT 1
-        """
-    )
-    fun getBotToken(): Flow<String?>
+    @Insert(onConflict = REPLACE)
+    suspend fun insertBot(botEntity: BotEntity)
 
-    @Query(
-        """
-        INSERT
-        INTO bot (token, id, name, username)
-        VALUES (:token, :id, :name, :username)
-        """
-    )
-    fun setBot(token: String, id: Long, name: String, username: String)
-
-    @Query(
-        """
-        UPDATE bot
-        SET is_token_valid = :isTokenValid
-        WHERE record_id = 1
-        """
-    )
-    suspend fun setIsTokenValid(isTokenValid: Boolean)
-
-    @Query(
-        """
-        UPDATE bot
-        SET name = :name, username = :username
-        WHERE record_id = 1
-        """
-    )
-    suspend fun setDetails(name: String, username: String)
-
-    @Query(
-        """
-        DELETE
-        FROM bot
-        WHERE record_id = 1
-        """
-    )
-    suspend fun deleteBot()
+    @Update
+    suspend fun updateBot(botEntity: BotEntity)
 }

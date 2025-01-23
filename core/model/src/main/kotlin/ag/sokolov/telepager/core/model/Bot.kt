@@ -1,7 +1,7 @@
 package ag.sokolov.telepager.core.model
 
 data class Bot(
-    val isTokenValid: Boolean,
+    val id: Long,
     val name: String,
     val username: String,
 )

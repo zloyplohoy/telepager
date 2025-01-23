@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
     api(projects.core.result)
+
+    implementation(projects.core.concurrency)
     implementation(projects.core.model)
 
     implementation(libs.kotlinx.serialization.json)

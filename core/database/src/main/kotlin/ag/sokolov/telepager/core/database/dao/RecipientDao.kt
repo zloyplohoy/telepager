@@ -2,7 +2,10 @@ package ag.sokolov.telepager.core.database.dao
 
 import ag.sokolov.telepager.core.database.entity.RecipientEntity
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,41 +18,11 @@ interface RecipientDao {
     )
     fun getRecipients(): Flow<List<RecipientEntity>>
 
-    @Query(
-        """
-        INSERT OR REPLACE
-        INTO recipient (id, first_name, last_name, username)
-        VALUES (:id, :firstName, :lastName, :username)
-        """
-    )
-    fun addRecipient(id: Long, firstName: String, lastName: String?, username: String?)
+    @Insert(onConflict = REPLACE)
+    fun insertRecipient(recipientEntity: RecipientEntity)
 
-    @Query(
-        """
-        UPDATE recipient
-        SET first_name = :firstName, last_name = :lastName, username = :username
-        WHERE id = :id
-        """
-    )
-    fun setDetails(id: Long, firstName: String, lastName: String?, username: String?)
-
-    @Query(
-        """
-        UPDATE recipient
-        SET is_deleted = :isDeleted
-        WHERE id = :id
-        """
-    )
-    fun setIsDeleted(id: Long, isDeleted: Boolean)
-
-    @Query(
-        """
-        UPDATE recipient
-        SET is_bot_blocked = :isBotBlocked
-        WHERE id = :id
-        """
-    )
-    fun setIsBotBlocked(id: Long, isBotBlocked: Boolean)
+    @Update
+    fun updateRecipient(recipientEntity: RecipientEntity)
 
     @Query(
         """

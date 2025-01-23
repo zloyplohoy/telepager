@@ -2,96 +2,63 @@ package ag.sokolov.telepager.core.data
 
 import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
 import ag.sokolov.telepager.core.concurrency.Dispatcher
-import ag.sokolov.telepager.core.data.RepositoryError.InvalidToken
-import ag.sokolov.telepager.core.data.RepositoryError.NetworkError
-import ag.sokolov.telepager.core.data.RepositoryError.UnknownError
 import ag.sokolov.telepager.core.database.dao.BotDao
+import ag.sokolov.telepager.core.database.dao.BotTokenDao
+import ag.sokolov.telepager.core.database.entity.BotTokenEntity
+import ag.sokolov.telepager.core.database.entity.asEntity
 import ag.sokolov.telepager.core.database.entity.asExternalModel
 import ag.sokolov.telepager.core.model.Bot
-import ag.sokolov.telepager.core.result.Result
-import ag.sokolov.telepager.core.result.Result.Failure
-import ag.sokolov.telepager.core.result.Result.Success
-import ag.sokolov.telepager.core.telegram.TelegramBotApi
-import ag.sokolov.telepager.core.telegram.TelegramBotApiError
+import ag.sokolov.telepager.core.model.BotState
+import ag.sokolov.telepager.core.model.BotToken
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BotRepositoryImpl @Inject constructor(
     private val botDao: BotDao,
-    private val telegramBotApi: TelegramBotApi,
+    private val botTokenDao: BotTokenDao,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : BotRepository {
     override fun getBot(): Flow<Bot?> =
         botDao.getBot()
             .distinctUntilChanged()
             .map { it?.asExternalModel() }
-            .onStart { updateDetails() }
 
-    override suspend fun addBot(token: String): Result<Nothing, RepositoryError> =
-        withContext(ioDispatcher) {
-            val getBotResult = telegramBotApi.getMe(token)
+    override suspend fun setBot(bot: Bot) =
+        withContext(ioDispatcher) { botDao.insertBot(bot.asEntity()) }
 
-            when (getBotResult) {
-                is Success -> {
-                    val bot = getBotResult.data!!
-                    botDao.setBot(
-                        token = token,
-                        id = bot.id,
-                        name = bot.firstName,
-                        username = bot.username!!
-                    )
-                    Success()
-                }
+    override suspend fun updateBot(bot: Bot) =
+        withContext(ioDispatcher) { botDao.updateBot(bot.asEntity()) }
 
-                is Failure -> {
-                    when (getBotResult.error) {
-                        is TelegramBotApiError.Unauthorized -> Failure(InvalidToken)
-                        is TelegramBotApiError.NetworkError -> Failure(NetworkError)
-                        else -> Failure(UnknownError)
-                    }
-                }
-            }
-        }
+    override suspend fun deleteBot() =
+        withContext(ioDispatcher) { botTokenDao.deleteBotToken() }
 
-    override suspend fun deleteBot(): Result<Nothing, RepositoryError> =
-        withContext(ioDispatcher) {
-            botDao.deleteBot()
-            Success()
-        }
-
-    override suspend fun updateDetails(): Result<Nothing, RepositoryError> =
-        withContext(ioDispatcher) {
-            val token = botDao.getBotToken().firstOrNull()
-
-            if (token == null) {
-                Success()
+    override fun getBotState(): Flow<BotState?> =
+        combine(
+            botTokenDao.getBotToken().distinctUntilChanged(),
+            botDao.getBot().distinctUntilChanged()
+        )
+        { botToken, bot ->
+            if (botToken == null || bot == null) {
+                null
             } else {
-                when (val getBotResult = telegramBotApi.getMe(token)) {
-                    is Success -> {
-                        val bot = getBotResult.data!!
-                        botDao.setIsTokenValid(true)
-                        botDao.setDetails(
-                            name = bot.firstName,
-                            username = bot.username!!
-                        )
-                        Success()
-                    }
-
-                    is Failure -> {
-                        if (getBotResult.error is TelegramBotApiError.Unauthorized) {
-                            botDao.setIsTokenValid(false)
-                            Failure(InvalidToken)
-                        } else {
-                            Failure(UnknownError)
-                        }
-                    }
-                }
+                BotState(
+                    bot = bot.asExternalModel(),
+                    isTokenValid = botToken.isValid
+                )
             }
         }
+
+    override fun getBotToken(): Flow<BotToken?> =
+        botTokenDao.getBotToken().map { it?.asExternalModel() }
+
+    override suspend fun setBotToken(token: String) =
+        withContext(ioDispatcher) { botTokenDao.insertBotToken(BotTokenEntity(token = token)) }
+
+    override suspend fun invalidateBotToken() =
+        withContext(ioDispatcher) { botTokenDao.updateIsBotTokenValid(false) }
 }

@@ -2,8 +2,10 @@ package ag.sokolov.telepager.feature.home
 
 import ag.sokolov.telepager.core.data.BotRepository
 import ag.sokolov.telepager.core.data.RecipientRepository
-import ag.sokolov.telepager.core.domain.recipientregistration.RecipientRegistrationManager
-import ag.sokolov.telepager.core.domain.recipientregistration.RecipientRegistrationState.RegistrationStarted
+import ag.sokolov.telepager.core.domain.domain.AddBotUseCase
+import ag.sokolov.telepager.core.domain.domain.AddRecipientState
+import ag.sokolov.telepager.core.domain.domain.AddRecipientUseCase
+import ag.sokolov.telepager.core.domain.domain.UpdateRecipientsUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +23,16 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val botRepository: BotRepository,
     private val recipientRepository: RecipientRepository,
-    private val recipientRegistrationManager: RecipientRegistrationManager,
+    private val addBotUseCase: AddBotUseCase,
+    private val addRecipientUseCase: AddRecipientUseCase,
+    private val updateRecipientsUseCase: UpdateRecipientsUseCase,
 ) : ViewModel() {
+    init {
+        viewModelScope.launch {
+            updateRecipientsUseCase()
+        }
+    }
+
     private var recipientRegistrationJob: Job? = null
 
     private val _recipientRegistrationStateFlow =
@@ -31,27 +41,26 @@ class HomeViewModel @Inject constructor(
     val recipientRegistrationStateFlow: StateFlow<RegistrationState> =
         _recipientRegistrationStateFlow.asStateFlow()
 
-    val stateFlow = combine(
-        botRepository.getBot(),
-        recipientRepository.getRecipients()
-    ) { bot, recipients ->
-        HomeScreenState(
-            bot = bot,
-            recipients = recipients
-        )
-    }
-        .stateIn(
+    val stateFlow =
+        combine(
+            botRepository.getBotState(),
+            recipientRepository.getRecipientStateList()
+        ) { botState, recipientStateList ->
+            HomeScreenState(
+                botState = botState,
+                recipientStateList = recipientStateList
+            )
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = HomeScreenState()
         )
 
-
     fun startRecipientRegistration() {
         recipientRegistrationJob = viewModelScope.launch {
-            recipientRegistrationManager.registerRecipient().collect {
+            addRecipientUseCase().collect {
                 when (it) {
-                    is RegistrationStarted -> {
+                    is AddRecipientState.Started -> {
                         _recipientRegistrationStateFlow.value = RegistrationState(true, it.tgUrl)
                     }
 
@@ -69,7 +78,7 @@ class HomeViewModel @Inject constructor(
         _recipientRegistrationStateFlow.value = RegistrationState()
     }
 
-    fun addBot(token: String) = viewModelScope.launch { botRepository.addBot(token) }
+    fun addBot(token: String) = viewModelScope.launch { addBotUseCase(token) }
 
     fun deleteBot() = viewModelScope.launch { botRepository.deleteBot() }
 

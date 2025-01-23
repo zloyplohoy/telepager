@@ -2,7 +2,8 @@ package ag.sokolov.telepager.feature.home.component
 
 import ag.sokolov.telepager.core.designsystem.icon.TelepagerIcons
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
-import ag.sokolov.telepager.core.model.Recipient
+import ag.sokolov.telepager.core.model.RecipientState
+import ag.sokolov.telepager.core.model.SampleRecipientState
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -21,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun RecipientsMenuItem(
-    state: List<Recipient>,
+    recipientStateList: List<RecipientState>,
     onClick: () -> Unit,
 ) {
     ListItem(
@@ -39,16 +40,16 @@ internal fun RecipientsMenuItem(
         },
         supportingContent = {
             AnimatedVisibility(
-                visible = showRecipientsMenuItemSupportingText(state),
+                visible = recipientStateList.isNotEmpty(),
                 enter = fadeIn() + expandVertically()
             ) {
-                getRecipientsMenuItemSupportingText(state)?.let {
+                getRecipientsMenuItemSupportingText(recipientStateList)?.let {
                     Text(text = it)
                 }
             }
         },
         trailingContent = {
-            getRecipientsMenuItemTrailingIcon(state)?.let {
+            getRecipientsMenuItemTrailingIcon(recipientStateList)?.let {
                 Icon(
                     imageVector = it,
                     contentDescription = null
@@ -58,26 +59,25 @@ internal fun RecipientsMenuItem(
     )
 }
 
-internal fun showRecipientsMenuItemSupportingText(recipientList: List<Recipient>): Boolean =
-    recipientList.isNotEmpty()
-
-internal fun getRecipientsMenuItemSupportingText(recipientList: List<Recipient>): String? =
+internal fun getRecipientsMenuItemSupportingText(recipientStateList: List<RecipientState>): String? =
     when {
-        recipientList.isEmpty() -> null
-        recipientList.any { it.isBotBlocked } -> "Some recipients have blocked the bot"
-        recipientList.size == 1 -> getFirstRecipientName(recipientList)
-        else -> "${getFirstRecipientName(recipientList)} and ${recipientList.size - 1} more"
+        recipientStateList.isEmpty() -> null
+        recipientStateList.any { it.isBotBlocked } -> "Some recipients have blocked the bot"
+        recipientStateList.size == 1 -> getFirstRecipientName(recipientStateList)
+        else -> "${getFirstRecipientName(recipientStateList)} and ${recipientStateList.size - 1} more"
     }
 
-internal fun getFirstRecipientName(recipientList: List<Recipient>): String? =
-    recipientList.firstOrNull()?.run {
-        this.lastName?.let { "${this.firstName} ${this.lastName}" } ?: this.firstName
+internal fun getFirstRecipientName(recipientStateList: List<RecipientState>): String? =
+    recipientStateList.firstOrNull()?.run {
+        recipient.lastName?.let {
+            "${recipient.firstName} ${recipient.lastName}"
+        } ?: recipient.firstName
     }
 
-internal fun getRecipientsMenuItemTrailingIcon(recipientList: List<Recipient>): ImageVector? =
+internal fun getRecipientsMenuItemTrailingIcon(recipientStateList: List<RecipientState>): ImageVector? =
     when {
-        recipientList.isEmpty() -> null
-        recipientList.any { it.isBotBlocked } -> TelepagerIcons.Error
+        recipientStateList.isEmpty() -> null
+        recipientStateList.any { it.isBotBlocked } -> TelepagerIcons.Error
         else -> TelepagerIcons.CheckCircle
     }
 
@@ -87,7 +87,7 @@ private fun PreviewRecipientsMenuItem() {
     TelepagerTheme {
         Surface {
             RecipientsMenuItem(
-                state = emptyList(),
+                recipientStateList = emptyList(),
                 onClick = {}
             )
         }
@@ -100,14 +100,8 @@ private fun PreviewRecipientsMenuItemSingle() {
     TelepagerTheme {
         Surface {
             RecipientsMenuItem(
-                state = listOf(
-                    Recipient(
-                        id = 0,
-                        firstName = "Konstantin",
-                        lastName = "Konstantinopolskii",
-                        username = "",
-                        isBotBlocked = false
-                    )
+                recipientStateList = listOf(
+                    SampleRecipientState.FULL_NAME
                 ),
                 onClick = {}
             )
@@ -121,28 +115,9 @@ private fun PreviewRecipientsMenuItemMultiple() {
     TelepagerTheme {
         Surface {
             RecipientsMenuItem(
-                state = listOf(
-                    Recipient(
-                        id = 0,
-                        firstName = "Konstantin",
-                        lastName = "Konstantinopolskii",
-                        username = "",
-                        isBotBlocked = false
-                    ),
-                    Recipient(
-                        id = 0,
-                        firstName = "Konstantin",
-                        lastName = "Konstantinopolskii",
-                        username = "",
-                        isBotBlocked = false
-                    ),
-                    Recipient(
-                        id = 0,
-                        firstName = "Konstantin",
-                        lastName = "Konstantinopolskii",
-                        username = "",
-                        isBotBlocked = false
-                    )
+                recipientStateList = listOf(
+                    SampleRecipientState.FULL_NAME,
+                    SampleRecipientState.FULL_NAME_AND_USERNAME,
                 ),
                 onClick = {}
             )
@@ -156,14 +131,8 @@ private fun PreviewRecipientsMenuItemError() {
     TelepagerTheme {
         Surface {
             RecipientsMenuItem(
-                state = listOf(
-                    Recipient(
-                        id = 0,
-                        firstName = "Konstantin",
-                        lastName = "Konstantinopolsky",
-                        username = "",
-                        isBotBlocked = true
-                    )
+                recipientStateList = listOf(
+                    SampleRecipientState.FULL_NAME_AND_USERNAME_BOT_BLOCKED
                 ),
                 onClick = {}
             )

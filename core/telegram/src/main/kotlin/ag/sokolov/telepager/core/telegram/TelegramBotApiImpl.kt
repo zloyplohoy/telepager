@@ -1,5 +1,7 @@
 package ag.sokolov.telepager.core.telegram
 
+import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
+import ag.sokolov.telepager.core.concurrency.Dispatcher
 import ag.sokolov.telepager.core.result.Result
 import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
@@ -9,11 +11,13 @@ import ag.sokolov.telepager.core.telegram.TelegramBotApiError.NetworkError
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
 import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
-import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatFullInfoDto
+import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatMemberMemberDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
@@ -26,6 +30,7 @@ import javax.inject.Inject
 internal class TelegramBotApiImpl @Inject constructor(
     private val json: Json,
     okHttpCallFactory: dagger.Lazy<Call.Factory>,
+    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : TelegramBotApi {
     private val jsonMediaType = "application/json".toMediaType()
 
@@ -40,13 +45,22 @@ internal class TelegramBotApiImpl @Inject constructor(
     override suspend fun getMe(
         token: String,
     ): Result<UserDto, TelegramBotApiError> =
-        safeApiCall { botApi.getMe(token) }
+        withContext(ioDispatcher) {
+            safeApiCall {
+                botApi.getMe(token)
+            }
+        }
 
-    override suspend fun getChat(
+    override suspend fun getChatMember(
         token: String,
         chatId: Long,
-    ): Result<ChatFullInfoDto, TelegramBotApiError> =
-        safeApiCall { botApi.getChat(token, chatId) }
+        userId: Long,
+    ): Result<ChatMemberMemberDto, TelegramBotApiError> =
+        withContext(ioDispatcher) {
+            safeApiCall {
+                botApi.getChatMember(token, chatId, userId)
+            }
+        }
 
     override suspend fun getUpdates(
         token: String,
@@ -54,14 +68,22 @@ internal class TelegramBotApiImpl @Inject constructor(
         offset: Long?,
         allowedUpdates: List<String>?,
     ): Result<List<UpdateDto>, TelegramBotApiError> =
-        safeApiCall { botApi.getUpdates(token, timeout, offset, allowedUpdates) }
+        withContext(ioDispatcher) {
+            safeApiCall {
+                botApi.getUpdates(token, timeout, offset, allowedUpdates)
+            }
+        }
 
     override suspend fun sendMessage(
         token: String,
         userId: Long,
         text: String,
     ): Result<Unit, TelegramBotApiError> =
-        safeApiCall { botApi.sendMessage(token, userId, text) }
+        withContext(ioDispatcher) {
+            safeApiCall {
+                botApi.sendMessage(token, userId, text)
+            }
+        }
 
     private suspend fun <T> safeApiCall(
         apiCall: suspend () -> Response<ResponseDto<T>>,
@@ -84,7 +106,14 @@ internal class TelegramBotApiImpl @Inject constructor(
             val errorDto = json.decodeFromString<ErrorDto>(response.errorBody()!!.string())
             when (response.code()) {
                 401 -> Unauthorized
-                403 -> Forbidden.BotWasBlockedByTheUser
+                403 -> {
+                    when (errorDto.description) {
+                        "Forbidden: user is deactivated" -> Forbidden.UserIsDeactivated
+                        "Forbidden: bot was blocked by the user" -> Forbidden.BotWasBlockedByTheUser
+                        else -> UnknownError(errorDto.description)
+                    }
+                }
+
                 400 -> {
                     when (errorDto.description) {
                         "Bad Request: chat not found" -> BadRequest.ChatNotFound

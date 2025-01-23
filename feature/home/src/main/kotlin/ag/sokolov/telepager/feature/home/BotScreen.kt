@@ -3,7 +3,7 @@ package ag.sokolov.telepager.feature.home
 import TokenTextField
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
-import ag.sokolov.telepager.core.model.Bot
+import ag.sokolov.telepager.core.model.SampleBotState
 import ag.sokolov.telepager.feature.home.component.BotListItem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -71,7 +71,7 @@ internal fun BotScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            if (state.bot == null) {
+            if (state.botState == null) {
                 TokenTextField(
                     value = token,
                     onValueChange = ::setToken,
@@ -82,7 +82,7 @@ internal fun BotScreen(
                 )
             } else {
                 BotListItem(
-                    bot = state.bot,
+                    botState = state.botState,
                     onDeleteBot = onDeleteBot
                 )
             }
@@ -97,11 +97,7 @@ private fun PreviewBotScreen() {
         Surface {
             BotScreen(
                 state = HomeScreenState(
-                    Bot(
-                        isTokenValid = true,
-                        name = "A beautiful bot name",
-                        username = "a_beautiful_bot"
-                    )
+                    botState = SampleBotState.VALID
                 ),
                 onBackClick = {},
                 onAddBot = {},
@@ -118,7 +114,7 @@ private fun PreviewBotScreenNoBot() {
         Surface {
             BotScreen(
                 state = HomeScreenState(
-                    bot = null
+                    botState = null
                 ),
                 onBackClick = {},
                 onAddBot = {},

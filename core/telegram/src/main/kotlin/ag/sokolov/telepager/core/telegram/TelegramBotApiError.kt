@@ -6,14 +6,15 @@ sealed class TelegramBotApiError {
     data class UnknownError(val message: String?) : TelegramBotApiError()
 
     // Bot API errors
-    data object Unauthorized : TelegramBotApiError()
+    sealed class BadRequest : TelegramBotApiError() {
+        data object ChatNotFound : BadRequest()
+        data object MessageTextIsEmpty : BadRequest()
+    }
 
     sealed class Forbidden : TelegramBotApiError() {
         data object BotWasBlockedByTheUser : Forbidden()
+        data object UserIsDeactivated : Forbidden()
     }
 
-    sealed class BadRequest : TelegramBotApiError() {
-        data object MessageTextIsEmpty : BadRequest()
-        data object ChatNotFound : BadRequest()
-    }
+    data object Unauthorized : TelegramBotApiError()
 }
