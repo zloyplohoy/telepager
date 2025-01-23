@@ -76,12 +76,12 @@ internal class TelegramBotApiImpl @Inject constructor(
 
     override suspend fun sendMessage(
         token: String,
-        userId: Long,
+        chatId: Long,
         text: String,
     ): Result<Unit, TelegramBotApiError> =
         withContext(ioDispatcher) {
             safeApiCall {
-                botApi.sendMessage(token, userId, text)
+                botApi.sendMessage(token, chatId, text)
             }
         }
 

@@ -25,7 +25,7 @@ interface TelegramBotApi {
 
     suspend fun sendMessage(
         token: String,
-        userId: Long,
+        chatId: Long,
         text: String,
     ): Result<Unit, TelegramBotApiError>
 }
