@@ -12,11 +12,11 @@ import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Forbidden
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.NetworkError
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
-import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatMemberMemberDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
+import ag.sokolov.telepager.core.telegram.dto.ChatMemberMemberDto
+import ag.sokolov.telepager.core.telegram.dto.ErrorDto
+import ag.sokolov.telepager.core.telegram.dto.ResponseDto
+import ag.sokolov.telepager.core.telegram.dto.UpdateDto
+import ag.sokolov.telepager.core.telegram.dto.UserDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json

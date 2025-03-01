@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.core.telegram.retrofit.dto
+package ag.sokolov.telepager.core.telegram.dto
 
 import kotlinx.serialization.Serializable
 

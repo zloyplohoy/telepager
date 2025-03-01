@@ -9,10 +9,10 @@ import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
-import ag.sokolov.telepager.core.telegram.retrofit.dto.MessageDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.asExternalModel
+import ag.sokolov.telepager.core.telegram.dto.MessageDto
+import ag.sokolov.telepager.core.telegram.dto.UpdateDto
+import ag.sokolov.telepager.core.telegram.dto.UserDto
+import ag.sokolov.telepager.core.telegram.dto.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow

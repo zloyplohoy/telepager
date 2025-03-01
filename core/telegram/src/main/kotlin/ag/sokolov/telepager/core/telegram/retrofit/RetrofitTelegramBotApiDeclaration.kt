@@ -1,9 +1,9 @@
 package ag.sokolov.telepager.core.telegram.retrofit
 
-import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatMemberMemberDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
+import ag.sokolov.telepager.core.telegram.dto.ChatMemberMemberDto
+import ag.sokolov.telepager.core.telegram.dto.ResponseDto
+import ag.sokolov.telepager.core.telegram.dto.UpdateDto
+import ag.sokolov.telepager.core.telegram.dto.UserDto
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
