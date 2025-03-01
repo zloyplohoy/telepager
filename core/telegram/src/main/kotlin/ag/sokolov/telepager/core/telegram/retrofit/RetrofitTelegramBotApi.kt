@@ -1,16 +1,17 @@
-package ag.sokolov.telepager.core.telegram
+package ag.sokolov.telepager.core.telegram.retrofit
 
 import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
 import ag.sokolov.telepager.core.concurrency.Dispatcher
 import ag.sokolov.telepager.core.result.Result
 import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
+import ag.sokolov.telepager.core.telegram.TelegramBotApi
+import ag.sokolov.telepager.core.telegram.TelegramBotApiError
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.BadRequest
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Forbidden
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.NetworkError
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
-import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApiDeclaration
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatMemberMemberDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto

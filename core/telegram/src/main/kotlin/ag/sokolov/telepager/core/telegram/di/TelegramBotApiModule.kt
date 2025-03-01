@@ -1,7 +1,7 @@
 package ag.sokolov.telepager.core.telegram.di
 
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
-import ag.sokolov.telepager.core.telegram.RetrofitTelegramBotApi
+import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
