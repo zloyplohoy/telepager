@@ -10,7 +10,7 @@ import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Forbidden
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.NetworkError
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
-import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApi
+import ag.sokolov.telepager.core.telegram.retrofit.RetrofitTelegramBotApiDeclaration
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatMemberMemberDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ErrorDto
 import ag.sokolov.telepager.core.telegram.retrofit.dto.ResponseDto
@@ -27,20 +27,20 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
 
-internal class TelegramBotApiImpl @Inject constructor(
+internal class RetrofitTelegramBotApi @Inject constructor(
     private val json: Json,
     okHttpCallFactory: dagger.Lazy<Call.Factory>,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : TelegramBotApi {
     private val jsonMediaType = "application/json".toMediaType()
 
-    private val botApi: RetrofitTelegramBotApi =
+    private val botApi: RetrofitTelegramBotApiDeclaration =
         Retrofit.Builder()
             .baseUrl("https://api.telegram.org")
             .callFactory { okHttpCallFactory.get().newCall(it) }
             .addConverterFactory(json.asConverterFactory(jsonMediaType))
             .build()
-            .create(RetrofitTelegramBotApi::class.java)
+            .create(RetrofitTelegramBotApiDeclaration::class.java)
 
     override suspend fun getMe(
         token: String,
