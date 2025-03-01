@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.core.telegram.retrofit.dto
+package ag.sokolov.telepager.core.telegram.dto
 
 import ag.sokolov.telepager.core.model.Bot
 import ag.sokolov.telepager.core.model.Recipient

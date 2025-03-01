@@ -6,7 +6,7 @@ import ag.sokolov.telepager.core.result.Result
 import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
-import ag.sokolov.telepager.core.telegram.retrofit.dto.asExternalModel
+import ag.sokolov.telepager.core.telegram.dto.asExternalModel
 import javax.inject.Inject
 import javax.inject.Singleton
 

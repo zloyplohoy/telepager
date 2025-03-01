@@ -1,9 +1,9 @@
 package ag.sokolov.telepager.core.telegram
 
 import ag.sokolov.telepager.core.result.Result
-import ag.sokolov.telepager.core.telegram.retrofit.dto.ChatMemberMemberDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UpdateDto
-import ag.sokolov.telepager.core.telegram.retrofit.dto.UserDto
+import ag.sokolov.telepager.core.telegram.dto.ChatMemberMemberDto
+import ag.sokolov.telepager.core.telegram.dto.UpdateDto
+import ag.sokolov.telepager.core.telegram.dto.UserDto
 
 interface TelegramBotApi {
     suspend fun getMe(

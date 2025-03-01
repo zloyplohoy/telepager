@@ -8,7 +8,7 @@ import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
-import ag.sokolov.telepager.core.telegram.retrofit.dto.asExternalModel
+import ag.sokolov.telepager.core.telegram.dto.asExternalModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
