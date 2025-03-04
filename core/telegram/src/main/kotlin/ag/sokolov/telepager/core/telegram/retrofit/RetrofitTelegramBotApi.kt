@@ -14,7 +14,7 @@ import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
 import ag.sokolov.telepager.core.telegram.dto.ChatMemberMemberDto
 import ag.sokolov.telepager.core.telegram.dto.ErrorDto
-import ag.sokolov.telepager.core.telegram.dto.ResponseDto
+import ag.sokolov.telepager.core.telegram.dto.SuccessDto
 import ag.sokolov.telepager.core.telegram.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.dto.UserDto
 import kotlinx.coroutines.CoroutineDispatcher
@@ -87,7 +87,7 @@ internal class RetrofitTelegramBotApi @Inject constructor(
         }
 
     private suspend fun <T> safeApiCall(
-        apiCall: suspend () -> Response<ResponseDto<T>>,
+        apiCall: suspend () -> Response<SuccessDto<T>>,
     ): Result<T, TelegramBotApiError> =
         try {
             val response = apiCall()
@@ -102,7 +102,7 @@ internal class RetrofitTelegramBotApi @Inject constructor(
             Failure(UnknownError(e.localizedMessage))
         }
 
-    private fun <T> getTelegramApiError(response: Response<ResponseDto<T>>): TelegramBotApiError =
+    private fun <T> getTelegramApiError(response: Response<SuccessDto<T>>): TelegramBotApiError =
         try {
             val errorDto = json.decodeFromString<ErrorDto>(response.errorBody()!!.string())
             when (response.code()) {
