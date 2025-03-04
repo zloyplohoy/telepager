@@ -1,7 +1,7 @@
 package ag.sokolov.telepager.core.telegram.retrofit
 
 import ag.sokolov.telepager.core.telegram.dto.ChatMemberMemberDto
-import ag.sokolov.telepager.core.telegram.dto.ResponseDto
+import ag.sokolov.telepager.core.telegram.dto.SuccessDto
 import ag.sokolov.telepager.core.telegram.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.dto.UserDto
 import retrofit2.Response
@@ -12,12 +12,12 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface RetrofitTelegramBotApiDeclaration {
+internal interface RetrofitTelegramBotApiDeclaration {
     // https://core.telegram.org/bots/api#getme
     @GET("/bot{token}/getMe")
     suspend fun getMe(
         @Path("token") token: String,
-    ): Response<ResponseDto<UserDto>>
+    ): Response<SuccessDto<UserDto>>
 
     // https://core.telegram.org/bots/api#getchatmember
     @GET("/bot{token}/getChatMember")
@@ -25,7 +25,7 @@ interface RetrofitTelegramBotApiDeclaration {
         @Path("token") token: String,
         @Query("chat_id") chatId: Long,
         @Query("user_id") userId: Long,
-    ): Response<ResponseDto<ChatMemberMemberDto>>
+    ): Response<SuccessDto<ChatMemberMemberDto>>
 
     // https://core.telegram.org/bots/api#getupdates
     @GET("/bot{token}/getUpdates")
@@ -34,7 +34,7 @@ interface RetrofitTelegramBotApiDeclaration {
         @Query("timeout") timeout: Long? = null,
         @Query("offset") offset: Long? = null,
         @Query("allowed_updates") allowedUpdates: List<String>? = null,
-    ): Response<ResponseDto<List<UpdateDto>>>
+    ): Response<SuccessDto<List<UpdateDto>>>
 
     // https://core.telegram.org/bots/api#sendmessage
     @FormUrlEncoded
@@ -43,5 +43,5 @@ interface RetrofitTelegramBotApiDeclaration {
         @Path("token") token: String,
         @Field("chat_id") chatId: Long,
         @Field("text") text: String,
-    ): Response<ResponseDto<Unit>>
+    ): Response<SuccessDto<Unit>>
 }

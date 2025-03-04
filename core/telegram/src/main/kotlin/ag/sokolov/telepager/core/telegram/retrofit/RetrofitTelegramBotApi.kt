@@ -7,16 +7,14 @@ import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
 import ag.sokolov.telepager.core.telegram.TelegramBotApi
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError
-import ag.sokolov.telepager.core.telegram.TelegramBotApiError.BadRequest
-import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Forbidden
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.NetworkError
-import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.UnknownError
 import ag.sokolov.telepager.core.telegram.dto.ChatMemberMemberDto
 import ag.sokolov.telepager.core.telegram.dto.ErrorDto
-import ag.sokolov.telepager.core.telegram.dto.ResponseDto
+import ag.sokolov.telepager.core.telegram.dto.SuccessDto
 import ag.sokolov.telepager.core.telegram.dto.UpdateDto
 import ag.sokolov.telepager.core.telegram.dto.UserDto
+import ag.sokolov.telepager.core.telegram.mapTelegramBotApiError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -87,45 +85,26 @@ internal class RetrofitTelegramBotApi @Inject constructor(
         }
 
     private suspend fun <T> safeApiCall(
-        apiCall: suspend () -> Response<ResponseDto<T>>,
+        apiCall: suspend () -> Response<SuccessDto<T>>,
     ): Result<T, TelegramBotApiError> =
         try {
             val response = apiCall()
+            val statusCode = response.code()
+
             if (response.isSuccessful) {
                 Success(response.body()!!.result)
             } else {
-                Failure(getTelegramApiError<T>(response))
+                try {
+                    val errorDto = json.decodeFromString<ErrorDto>(response.errorBody()!!.string())
+                    val errorDescription = errorDto.description
+                    Failure(mapTelegramBotApiError(statusCode, errorDescription))
+                } catch (e: Exception) {
+                    Failure(UnknownError(e.localizedMessage))
+                }
             }
         } catch (e: IOException) {
             Failure(NetworkError(e.localizedMessage))
         } catch (e: Exception) {
             Failure(UnknownError(e.localizedMessage))
-        }
-
-    private fun <T> getTelegramApiError(response: Response<ResponseDto<T>>): TelegramBotApiError =
-        try {
-            val errorDto = json.decodeFromString<ErrorDto>(response.errorBody()!!.string())
-            when (response.code()) {
-                401 -> Unauthorized
-                403 -> {
-                    when (errorDto.description) {
-                        "Forbidden: user is deactivated" -> Forbidden.UserIsDeactivated
-                        "Forbidden: bot was blocked by the user" -> Forbidden.BotWasBlockedByTheUser
-                        else -> UnknownError(errorDto.description)
-                    }
-                }
-
-                400 -> {
-                    when (errorDto.description) {
-                        "Bad Request: chat not found" -> BadRequest.ChatNotFound
-                        "Bad Request: message text is empty" -> BadRequest.MessageTextIsEmpty
-                        else -> UnknownError(errorDto.description)
-                    }
-                }
-
-                else -> UnknownError(errorDto.description)
-            }
-        } catch (_: Exception) {
-            UnknownError("Could not parse error body")
         }
 }
