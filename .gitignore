@@ -34,3 +34,6 @@ google-services.json
 
 # K2 compiler
 *.salive
+
+# macOS .DS_Store
+.DS_Store
