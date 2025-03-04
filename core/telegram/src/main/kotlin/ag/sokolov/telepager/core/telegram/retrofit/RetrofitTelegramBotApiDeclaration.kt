@@ -12,7 +12,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface RetrofitTelegramBotApiDeclaration {
+internal interface RetrofitTelegramBotApiDeclaration {
     // https://core.telegram.org/bots/api#getme
     @GET("/bot{token}/getMe")
     suspend fun getMe(
