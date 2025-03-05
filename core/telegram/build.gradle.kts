@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.telepager.jvm.library)
-    alias(libs.plugins.telepager.hilt)
+    alias(libs.plugins.telepager.koin)
     alias(libs.plugins.kotlin.serialization)
 }
 

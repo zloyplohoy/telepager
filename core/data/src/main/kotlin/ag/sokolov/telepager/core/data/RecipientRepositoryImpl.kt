@@ -1,7 +1,5 @@
 package ag.sokolov.telepager.core.data
 
-import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
-import ag.sokolov.telepager.core.concurrency.Dispatcher
 import ag.sokolov.telepager.core.database.dao.RecipientDao
 import ag.sokolov.telepager.core.database.entity.asEntity
 import ag.sokolov.telepager.core.database.entity.asExternalModel
@@ -12,11 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class RecipientRepositoryImpl @Inject constructor(
+class RecipientRepositoryImpl(
     private val recipientDao: RecipientDao,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : RecipientRepository {
     override fun getRecipientList(): Flow<List<Recipient>> =
         recipientDao.getRecipients()

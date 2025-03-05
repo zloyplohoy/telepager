@@ -1,7 +1,5 @@
 package ag.sokolov.telepager.core.data
 
-import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
-import ag.sokolov.telepager.core.concurrency.Dispatcher
 import ag.sokolov.telepager.core.database.dao.BotDao
 import ag.sokolov.telepager.core.database.dao.BotTokenDao
 import ag.sokolov.telepager.core.database.entity.BotTokenEntity
@@ -16,12 +14,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class BotRepositoryImpl @Inject constructor(
+class BotRepositoryImpl(
     private val botDao: BotDao,
     private val botTokenDao: BotTokenDao,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : BotRepository {
     override fun getBot(): Flow<Bot?> =
         botDao.getBot()
