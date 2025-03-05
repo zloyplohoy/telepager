@@ -51,13 +51,13 @@ gradlePlugin {
             id = "telepager.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
-        register("hilt") {
-            id = "telepager.hilt"
-            implementationClass = "HiltConventionPlugin"
-        }
         register("jvmLibrary") {
             id = "telepager.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
+        }
+        register("koin") {
+            id = "telepager.koin"
+            implementationClass = "KoinConventionPlugin"
         }
     }
 }

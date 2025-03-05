@@ -8,7 +8,6 @@ import ag.sokolov.telepager.core.domain.domain.AddRecipientUseCase
 import ag.sokolov.telepager.core.domain.domain.UpdateRecipientsUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,10 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
     private val botRepository: BotRepository,
     private val recipientRepository: RecipientRepository,
     private val addBotUseCase: AddBotUseCase,

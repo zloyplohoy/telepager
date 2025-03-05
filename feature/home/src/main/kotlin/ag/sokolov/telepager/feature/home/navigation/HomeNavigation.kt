@@ -5,7 +5,6 @@ import ag.sokolov.telepager.feature.home.HomeScreen
 import ag.sokolov.telepager.feature.home.HomeViewModel
 import ag.sokolov.telepager.feature.home.PermissionsScreen
 import ag.sokolov.telepager.feature.home.RecipientsScreen
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,6 +12,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
 object HomeNavGraphRoute
@@ -54,7 +54,7 @@ fun NavGraphBuilder.homeScreen(
 ) =
     composable<HomeScreenRoute> {
         val viewModel: HomeViewModel =
-            hiltViewModel(navController.getBackStackEntry(HomeNavGraphRoute))
+            koinViewModel(viewModelStoreOwner = navController.getBackStackEntry(HomeNavGraphRoute))
 
         HomeScreen(
             viewModel = viewModel,
@@ -69,7 +69,7 @@ fun NavGraphBuilder.botScreen(
 ) =
     composable<BotScreenRoute> {
         val viewModel: HomeViewModel =
-            hiltViewModel(navController.getBackStackEntry(HomeNavGraphRoute))
+            koinViewModel(viewModelStoreOwner = navController.getBackStackEntry(HomeNavGraphRoute))
 
         BotScreen(
             viewModel = viewModel,
@@ -82,7 +82,7 @@ fun NavGraphBuilder.recipientsScreen(
 ) =
     composable<RecipientsScreenRoute> {
         val viewModel: HomeViewModel =
-            hiltViewModel(navController.getBackStackEntry(HomeNavGraphRoute))
+            koinViewModel(viewModelStoreOwner = navController.getBackStackEntry(HomeNavGraphRoute))
 
         RecipientsScreen(
             viewModel = viewModel,
