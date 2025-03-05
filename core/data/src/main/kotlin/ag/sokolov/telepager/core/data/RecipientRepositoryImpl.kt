@@ -1,21 +1,16 @@
 package ag.sokolov.telepager.core.data
 
-import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
-import ag.sokolov.telepager.core.concurrency.Dispatcher
 import ag.sokolov.telepager.core.database.dao.RecipientDao
 import ag.sokolov.telepager.core.database.entity.asEntity
 import ag.sokolov.telepager.core.database.entity.asExternalModel
 import ag.sokolov.telepager.core.model.Recipient
 import ag.sokolov.telepager.core.model.RecipientState
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class RecipientRepositoryImpl @Inject constructor(
-    private val recipientDao: RecipientDao,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
+class RecipientRepositoryImpl(
+    private val recipientDao: RecipientDao
 ) : RecipientRepository {
     override fun getRecipientList(): Flow<List<Recipient>> =
         recipientDao.getRecipients()

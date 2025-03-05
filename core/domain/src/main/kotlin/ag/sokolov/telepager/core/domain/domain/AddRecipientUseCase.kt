@@ -16,9 +16,8 @@ import ag.sokolov.telepager.core.telegram.dto.asExternalModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class AddRecipientUseCase @Inject constructor(
+class AddRecipientUseCase(
     val botRepository: BotRepository,
     val recipientRepository: RecipientRepository,
     val telegramBotApi: TelegramBotApi,

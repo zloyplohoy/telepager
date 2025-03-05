@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.telepager.android.library)
     alias(libs.plugins.telepager.android.room)
-    alias(libs.plugins.telepager.hilt)
+    alias(libs.plugins.telepager.koin)
 }
 
 android {
