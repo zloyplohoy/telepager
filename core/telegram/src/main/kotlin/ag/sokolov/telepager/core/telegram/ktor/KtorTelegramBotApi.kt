@@ -108,11 +108,11 @@ internal class KtorTelegramBotApi @Inject constructor(
             try {
                 val apiResponse = apiCall()
                 val statusCode = apiResponse.status.value
-                val errorDescription = apiResponse.body<ResponseDto<Unit>>().description
 
                 if (statusCode == 200) {
                     Success(apiResponse.body<ResponseDto<T>>().result)
                 } else {
+                    val errorDescription = apiResponse.body<ResponseDto<Unit>>().description
                     Failure(mapTelegramBotApiError(statusCode, errorDescription))
                 }
             } catch (e: UnresolvedAddressException) {
