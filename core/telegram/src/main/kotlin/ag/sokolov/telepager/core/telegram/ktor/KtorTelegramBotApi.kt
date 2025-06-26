@@ -25,7 +25,6 @@ import io.ktor.client.plugins.resources.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.nio.channels.UnresolvedAddressException
 import javax.inject.Inject
@@ -104,22 +103,20 @@ internal class KtorTelegramBotApi @Inject constructor(
     private suspend inline fun <reified T> safeApiCall(
         crossinline apiCall: suspend () -> HttpResponse,
     ): Result<T, TelegramBotApiError> =
-        withContext(ioDispatcher) {
-            try {
-                val apiResponse = apiCall()
-                val statusCode = apiResponse.status.value
+        try {
+            val apiResponse = apiCall()
+            val statusCode = apiResponse.status.value
 
-                if (statusCode == 200) {
-                    Success(apiResponse.body<ResponseDto<T>>().result)
-                } else {
-                    val errorDescription = apiResponse.body<ResponseDto<Unit>>().description
-                    Failure(mapTelegramBotApiError(statusCode, errorDescription))
-                }
-            } catch (e: UnresolvedAddressException) {
-                Failure(NetworkError(e.localizedMessage))
-            } catch (e: Exception) {
-                Failure(UnknownError(e.localizedMessage))
+            if (statusCode == 200) {
+                Success(apiResponse.body<ResponseDto<T>>().result)
+            } else {
+                val errorDescription = apiResponse.body<ResponseDto<Unit>>().description
+                Failure(mapTelegramBotApiError(statusCode, errorDescription))
             }
+        } catch (e: UnresolvedAddressException) {
+            Failure(NetworkError(e.localizedMessage))
+        } catch (e: Exception) {
+            Failure(UnknownError(e.localizedMessage))
         }
 
     private fun String.asUrlToken(): String = "bot$this"
