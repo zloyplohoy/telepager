@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RecipientRepositoryImpl @Inject constructor(
@@ -24,13 +23,13 @@ class RecipientRepositoryImpl @Inject constructor(
             .map { it.map { it.asExternalModel() } }
 
     override suspend fun addRecipient(recipient: Recipient) =
-        withContext(ioDispatcher) { recipientDao.insertRecipient(recipient.asEntity()) }
+        recipientDao.insertRecipient(recipient.asEntity())
 
     override suspend fun updateRecipient(recipient: Recipient) =
-        withContext(ioDispatcher) { recipientDao.updateRecipient(recipient.asEntity()) }
+        recipientDao.updateRecipient(recipient.asEntity())
 
     override suspend fun deleteRecipient(id: Long) =
-        withContext(ioDispatcher) { recipientDao.deleteRecipient(id) }
+        recipientDao.deleteRecipient(id)
 
     override fun getRecipientIdList(): Flow<List<Long>> =
         recipientDao.getRecipients()
