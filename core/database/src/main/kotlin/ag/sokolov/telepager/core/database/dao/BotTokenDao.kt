@@ -18,7 +18,7 @@ interface BotTokenDao {
     fun getBotToken(): Flow<BotTokenEntity?>
 
     @Insert(onConflict = REPLACE)
-    fun insertBotToken(botTokenEntity: BotTokenEntity)
+    suspend fun insertBotToken(botTokenEntity: BotTokenEntity)
 
     @Query(
         """
@@ -27,7 +27,7 @@ interface BotTokenDao {
         WHERE record_id = 0
         """
     )
-    fun updateIsBotTokenValid(isValid: Boolean)
+    suspend fun updateIsBotTokenValid(isValid: Boolean)
 
     @Query(
         """
@@ -35,5 +35,5 @@ interface BotTokenDao {
         WHERE record_id = 0
         """
     )
-    fun deleteBotToken()
+    suspend fun deleteBotToken()
 }

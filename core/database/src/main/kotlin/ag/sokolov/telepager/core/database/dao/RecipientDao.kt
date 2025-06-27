@@ -19,10 +19,10 @@ interface RecipientDao {
     fun getRecipients(): Flow<List<RecipientEntity>>
 
     @Insert(onConflict = REPLACE)
-    fun insertRecipient(recipientEntity: RecipientEntity)
+    suspend fun insertRecipient(recipientEntity: RecipientEntity)
 
     @Update
-    fun updateRecipient(recipientEntity: RecipientEntity)
+    suspend fun updateRecipient(recipientEntity: RecipientEntity)
 
     @Query(
         """
@@ -31,5 +31,5 @@ interface RecipientDao {
         WHERE id = :id
         """
     )
-    fun deleteRecipient(id: Long)
+    suspend fun deleteRecipient(id: Long)
 }
