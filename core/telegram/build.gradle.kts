@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.telepager.jvm.library)
-    alias(libs.plugins.telepager.hilt)
+    alias(libs.plugins.telepager.koin)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -16,7 +16,4 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.resources)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.okhttp)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.kotlinx.serialization)
 }

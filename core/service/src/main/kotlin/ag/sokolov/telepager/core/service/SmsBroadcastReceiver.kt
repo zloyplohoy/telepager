@@ -1,7 +1,5 @@
 package ag.sokolov.telepager.core.service
 
-import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
-import ag.sokolov.telepager.core.concurrency.Dispatcher
 import ag.sokolov.telepager.core.data.BotRepository
 import ag.sokolov.telepager.core.data.RecipientRepository
 import ag.sokolov.telepager.core.model.BotToken
@@ -11,27 +9,23 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Telephony.Sms.Intents.SMS_RECEIVED_ACTION
 import android.provider.Telephony.Sms.Intents.getMessagesFromIntent
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.qualifier.named
+import org.koin.java.KoinJavaComponent.getKoin
 
-@AndroidEntryPoint
-class SmsBroadcastReceiver : BroadcastReceiver() {
-    @Inject
-    lateinit var botRepository: BotRepository
+class SmsBroadcastReceiver(
+    val botRepository: BotRepository = getKoin().get(),
+    val recipientRepository: RecipientRepository = getKoin().get(),
+) : BroadcastReceiver(), KoinComponent {
 
-    @Inject
-    lateinit var recipientRepository: RecipientRepository
+    val telegramBotApi: TelegramBotApi by inject()
 
-    @Inject
-    lateinit var telegramBotApi: TelegramBotApi
-
-    @Inject
-    @Dispatcher(IO)
-    lateinit var ioDispatcher: CoroutineDispatcher
+    val ioDispatcher: CoroutineDispatcher by inject(named("IO"))
 
     override fun onReceive(
         context: Context,

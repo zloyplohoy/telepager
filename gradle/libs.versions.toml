@@ -6,16 +6,13 @@ androidGradlePlugin = "8.9.0"
 composeBom = "2025.01.00"
 composeNavigation = "2.8.5"
 coreKtx = "1.15.0"
-hilt = "2.52"
-hiltNavigationCompose = "1.2.0"
+koin = "4.0.2"
 kotlin = "2.0.21"
 kotlinSymbolProcessing = "2.0.21-1.0.26"
 kotlinxCoroutines = "1.9.0"
 kotlinxSerializationJson = "1.7.3"
 ktor = "3.1.1"
 lifecycleRuntime = "2.8.7"
-okhttp = "4.12.0"
-retrofit = "2.11.0"
 room = "2.6.1"
 qrkit = "3.0.6"
 
@@ -49,13 +46,12 @@ room-gradle-plugin = { group = "androidx.room", name = "room-gradle-plugin", ver
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 
-# Build logic: Hilt convention plugin
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
-
-# Build logic: Android feature convention plugin
-androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+# Build logic: Koin convention plugin
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation" }
+koin-compose-viewmodel-navigation = { group = "io.insert-koin", name = "koin-compose-viewmodel-navigation" }
 
 # Build logic: Android feature convention plugin; Module: :core:telegram
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -75,9 +71,6 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-resources = { module = "io.ktor:ktor-client-resources", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 
 # Module: :feature:home
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -99,9 +92,6 @@ room = { id = "androidx.room", version.ref = "room" }
 # Build logic: Android Room convention plugin, Hilt convention plugin
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinSymbolProcessing" }
 
-# Build logic: Hilt convention plugin
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-
 # Convention plugins
 telepager-android-application = { id = "telepager.android.application" }
 telepager-android-application-compose = { id = "telepager.android.application.compose" }
@@ -109,5 +99,5 @@ telepager-android-feature = { id = "telepager.android.feature" }
 telepager-android-library = { id = "telepager.android.library" }
 telepager-android-library-compose = { id = "telepager.android.library.compose" }
 telepager-android-room = { id = "telepager.android.room" }
-telepager-hilt = { id = "telepager.hilt" }
 telepager-jvm-library = { id = "telepager.jvm.library" }
+telepager-koin = { id = "telepager.koin" }

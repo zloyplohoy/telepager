@@ -10,7 +10,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("telepager.android.library")
-                apply("telepager.hilt")
+                apply("telepager.koin")
                 apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
@@ -23,7 +23,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
                 add("implementation", libs.findLibrary("androidx.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtime").get())
-                add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
                 add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
             }
         }

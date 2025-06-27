@@ -9,11 +9,8 @@ import ag.sokolov.telepager.core.telegram.TelegramBotApi
 import ag.sokolov.telepager.core.telegram.TelegramBotApiError.Unauthorized
 import ag.sokolov.telepager.core.telegram.dto.asExternalModel
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UpdateBotUseCase @Inject constructor(
+class UpdateBotUseCase(
     val botRepository: BotRepository,
     val telegramBotApi: TelegramBotApi,
 ) {

@@ -12,9 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class BotRepositoryImpl @Inject constructor(
+class BotRepositoryImpl(
     private val botDao: BotDao,
     private val botTokenDao: BotTokenDao,
 ) : BotRepository {

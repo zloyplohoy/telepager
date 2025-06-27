@@ -1,7 +1,5 @@
 package ag.sokolov.telepager.core.telegram.ktor
 
-import ag.sokolov.telepager.core.concurrency.CoroutineDispatchers.IO
-import ag.sokolov.telepager.core.concurrency.Dispatcher
 import ag.sokolov.telepager.core.result.Result
 import ag.sokolov.telepager.core.result.Result.Failure
 import ag.sokolov.telepager.core.result.Result.Success
@@ -26,12 +24,13 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
+import org.koin.core.qualifier.named
+import org.koin.java.KoinJavaComponent.getKoin
 import java.nio.channels.UnresolvedAddressException
-import javax.inject.Inject
 
-internal class KtorTelegramBotApi @Inject constructor(
-    private val json: Json,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
+internal class KtorTelegramBotApi(
+    private val json: Json = getKoin().get(),
+    private val ioDispatcher: CoroutineDispatcher = getKoin().get(named("IO")),
 ) : TelegramBotApi {
     private val client = HttpClient(CIO) {
         engine { dispatcher = ioDispatcher }
