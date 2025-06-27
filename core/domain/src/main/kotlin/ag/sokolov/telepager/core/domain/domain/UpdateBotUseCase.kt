@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.core.domain.domain;
+package ag.sokolov.telepager.core.domain.domain
 
 import ag.sokolov.telepager.core.data.BotRepository
 import ag.sokolov.telepager.core.model.Bot
