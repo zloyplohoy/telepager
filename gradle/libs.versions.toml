@@ -4,7 +4,6 @@ activityCompose = "1.10.1"
 androidDesugarJdkLibs = "2.1.5"
 androidGradlePlugin = "8.11.0"
 composeBom = "2025.06.01"
-composeNavigation = "2.9.0"
 coreKtx = "1.16.0"
 koin = "4.1.0"
 kotlin = "2.2.0"
@@ -24,9 +23,6 @@ qrkit = "3.0.6"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "lifecycleRuntime" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-
-# Compose navigation
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 
 # Build logic essentials
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
