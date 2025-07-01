@@ -13,5 +13,6 @@ dependencies {
     implementation(projects.core.domain)
 
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.navigation3.runtime)
     implementation(libs.qrkit)
 }
