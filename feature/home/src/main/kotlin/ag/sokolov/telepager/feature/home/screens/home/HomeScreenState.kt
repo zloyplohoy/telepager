@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.feature.home
+package ag.sokolov.telepager.feature.home.screens.home
 
 import ag.sokolov.telepager.core.model.BotState
 import ag.sokolov.telepager.core.model.RecipientState

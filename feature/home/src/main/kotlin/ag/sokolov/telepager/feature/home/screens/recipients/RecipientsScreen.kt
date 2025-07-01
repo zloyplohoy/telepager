@@ -1,7 +1,8 @@
-package ag.sokolov.telepager.feature.home
+package ag.sokolov.telepager.feature.home.screens.recipients
 
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
+import ag.sokolov.telepager.core.model.RecipientState
 import ag.sokolov.telepager.core.model.SampleRecipientState
 import ag.sokolov.telepager.feature.home.component.RecipientListItem
 import androidx.compose.foundation.Image
@@ -25,11 +26,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.compose.viewmodel.koinViewModel
 import qrgenerator.qrkitpainter.rememberQrKitPainter
 
 @Composable
 fun RecipientsScreen(
-    viewModel: HomeViewModel,
+    viewModel: RecipientsViewModel = koinViewModel(),
     onBackClick: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
@@ -37,7 +39,7 @@ fun RecipientsScreen(
 
     RecipientsScreen(
         state = state,
-        registrationState = registrationState,
+        recipientRegistrationState = registrationState,
         onBackClick = onBackClick,
         onAddRecipient = viewModel::startRecipientRegistration,
         onDismissRecipientRegistration = viewModel::stopRecipientRegistration,
@@ -47,16 +49,17 @@ fun RecipientsScreen(
 
 @Composable
 internal fun RecipientsScreen(
-    state: HomeScreenState,
-    registrationState: RegistrationState,
+    state: List<RecipientState>,
+    recipientRegistrationState: RecipientRegistrationState,
     onBackClick: () -> Unit,
     onAddRecipient: () -> Unit,
     onDismissRecipientRegistration: () -> Unit,
     onDeleteRecipient: (Long) -> Unit,
 ) {
 
-    if (registrationState.showRegistration) {
-        val registrationQrCodePainter = rememberQrKitPainter(data = registrationState.tgUrl!!)
+    if (recipientRegistrationState.showRegistration) {
+        val registrationQrCodePainter =
+            rememberQrKitPainter(data = recipientRegistrationState.tgUrl!!)
         Dialog(
             onDismissRequest = onDismissRecipientRegistration,
         ) {
@@ -98,7 +101,7 @@ internal fun RecipientsScreen(
             style = MaterialTheme.typography.labelMedium,
             text = "Active recipients"
         )
-        state.recipientStateList.forEach {
+        state.forEach {
             RecipientListItem(
                 recipientState = it,
                 onDeleteRecipient = { onDeleteRecipient(it.recipient.id) },
@@ -114,13 +117,11 @@ private fun PreviewRecipientsScreen() {
     TelepagerTheme {
         Surface {
             RecipientsScreen(
-                state = HomeScreenState(
-                    recipientStateList = listOf(
-                        SampleRecipientState.FULL_NAME,
-                        SampleRecipientState.FULL_NAME_AND_USERNAME
-                    )
+                state = listOf(
+                    SampleRecipientState.FULL_NAME,
+                    SampleRecipientState.FULL_NAME_AND_USERNAME
                 ),
-                registrationState = RegistrationState(),
+                recipientRegistrationState = RecipientRegistrationState(),
                 onBackClick = {},
                 onAddRecipient = {},
                 onDismissRecipientRegistration = {},
@@ -136,13 +137,14 @@ private fun PreviewRecipientsScreenRegistrationStarted() {
     TelepagerTheme {
         Surface {
             RecipientsScreen(
-                state = HomeScreenState(
-                    recipientStateList = listOf(
-                        SampleRecipientState.FULL_NAME,
-                        SampleRecipientState.FULL_NAME_AND_USERNAME
-                    )
+                state = listOf(
+                    SampleRecipientState.FULL_NAME,
+                    SampleRecipientState.FULL_NAME_AND_USERNAME
                 ),
-                registrationState = RegistrationState(showRegistration = true, tgUrl = "tgUrl"),
+                recipientRegistrationState = RecipientRegistrationState(
+                    showRegistration = true,
+                    tgUrl = "tgUrl"
+                ),
                 onAddRecipient = {},
                 onDismissRecipientRegistration = {},
                 onBackClick = {},

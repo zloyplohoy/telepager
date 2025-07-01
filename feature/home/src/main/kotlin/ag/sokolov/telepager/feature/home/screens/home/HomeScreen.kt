@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.feature.home
+package ag.sokolov.telepager.feature.home.screens.home
 
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
@@ -22,10 +22,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
+    viewModel: HomeViewModel = koinViewModel(),
     onNavigateToBotScreen: () -> Unit,
     onNavigateToRecipientsScreen: () -> Unit,
     onNavigateToPermissionsScreen: () -> Unit,

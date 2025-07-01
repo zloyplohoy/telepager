@@ -22,7 +22,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             dependencies {
                 add("implementation", project(":core:designsystem"))
 
-                add("implementation", libs.findLibrary("androidx.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtime").get())
                 add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
             }

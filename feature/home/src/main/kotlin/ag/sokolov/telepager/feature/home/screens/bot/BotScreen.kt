@@ -1,8 +1,9 @@
-package ag.sokolov.telepager.feature.home
+package ag.sokolov.telepager.feature.home.screens.bot
 
 import TokenTextField
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
+import ag.sokolov.telepager.core.model.BotState
 import ag.sokolov.telepager.core.model.SampleBotState
 import ag.sokolov.telepager.feature.home.component.BotListItem
 import androidx.compose.foundation.layout.Column
@@ -20,10 +21,11 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BotScreen(
-    viewModel: HomeViewModel,
+    viewModel: BotViewModel = koinViewModel(),
     onBackClick: () -> Unit,
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
@@ -38,7 +40,7 @@ fun BotScreen(
 
 @Composable
 internal fun BotScreen(
-    state: HomeScreenState,
+    state: BotState?,
     onBackClick: () -> Unit,
     onAddBot: (String) -> Unit,
     onDeleteBot: () -> Unit,
@@ -71,7 +73,7 @@ internal fun BotScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            if (state.botState == null) {
+            if (state == null) {
                 TokenTextField(
                     value = token,
                     onValueChange = ::setToken,
@@ -82,7 +84,7 @@ internal fun BotScreen(
                 )
             } else {
                 BotListItem(
-                    botState = state.botState,
+                    botState = state,
                     onDeleteBot = onDeleteBot
                 )
             }
@@ -96,9 +98,7 @@ private fun PreviewBotScreen() {
     TelepagerTheme {
         Surface {
             BotScreen(
-                state = HomeScreenState(
-                    botState = SampleBotState.VALID
-                ),
+                state = SampleBotState.VALID,
                 onBackClick = {},
                 onAddBot = {},
                 onDeleteBot = {}
@@ -113,9 +113,7 @@ private fun PreviewBotScreenNoBot() {
     TelepagerTheme {
         Surface {
             BotScreen(
-                state = HomeScreenState(
-                    botState = null
-                ),
+                state = null,
                 onBackClick = {},
                 onAddBot = {},
                 onDeleteBot = {}

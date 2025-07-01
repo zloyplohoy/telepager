@@ -1,98 +1,64 @@
 package ag.sokolov.telepager.feature.home.navigation
 
-import ag.sokolov.telepager.feature.home.BotScreen
-import ag.sokolov.telepager.feature.home.HomeScreen
-import ag.sokolov.telepager.feature.home.HomeViewModel
-import ag.sokolov.telepager.feature.home.PermissionsScreen
-import ag.sokolov.telepager.feature.home.RecipientsScreen
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import ag.sokolov.telepager.feature.home.screens.bot.BotScreen
+import ag.sokolov.telepager.feature.home.screens.home.HomeScreen
+import ag.sokolov.telepager.feature.home.screens.permissions.PermissionsScreen
+import ag.sokolov.telepager.feature.home.screens.recipients.RecipientsScreen
+import androidx.compose.runtime.Composable
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entry
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
-object HomeNavGraphRoute
+data object HomeScreenNavKey : NavKey
 
-@Serializable
-object HomeScreenRoute
-
-@Serializable
-object BotScreenRoute
-
-@Serializable
-object RecipientsScreenRoute
-
-@Serializable
-object PermissionsScreenRoute
-
-fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
-    navigation<HomeNavGraphRoute>(
-        startDestination = HomeScreenRoute
-    ) {
-        homeScreen(navController = navController)
-        botScreen(navController = navController)
-        recipientsScreen(navController = navController)
-        permissionsScreen(navController = navController)
-    }
+@Composable
+fun EntryProviderBuilder<NavKey>.HomeScreenNavEntry(
+    onNavigate: (NavKey) -> Unit
+) = entry(HomeScreenNavKey) {
+    HomeScreen(
+        viewModel = koinViewModel(),
+        onNavigateToBotScreen = { onNavigate(BotScreenNavKey) },
+        onNavigateToRecipientsScreen = { onNavigate(RecipientsScreenNavKey) },
+        onNavigateToPermissionsScreen = { onNavigate(PermissionsScreenNavKey) }
+    )
 }
 
-fun NavController.navigateToBotScreen(navOptions: NavOptions? = null) =
-    navigate(BotScreenRoute, navOptions)
+@Serializable
+data object BotScreenNavKey : NavKey
 
-fun NavController.navigateToRecipientsScreen(navOptions: NavOptions? = null) =
-    navigate(RecipientsScreenRoute, navOptions)
+@Composable
+fun EntryProviderBuilder<NavKey>.BotScreenNavEntry(
+    onBackClick: () -> Unit
+) = entry(BotScreenNavKey) {
+    BotScreen(
+        viewModel = koinViewModel(),
+        onBackClick = onBackClick
+    )
+}
 
-fun NavController.navigateToPermissionsScreen(navOptions: NavOptions? = null) =
-    navigate(PermissionsScreenRoute, navOptions)
+@Serializable
+data object RecipientsScreenNavKey : NavKey
 
-fun NavGraphBuilder.homeScreen(
-    navController: NavHostController,
-) =
-    composable<HomeScreenRoute> {
-        val viewModel: HomeViewModel =
-            koinViewModel(viewModelStoreOwner = navController.getBackStackEntry(HomeNavGraphRoute))
+@Composable
+fun EntryProviderBuilder<NavKey>.RecipientsScreenNavEntry(
+    onBackClick: () -> Unit
+) = entry(RecipientsScreenNavKey) {
+    RecipientsScreen(
+        onBackClick = onBackClick
+    )
+}
 
-        HomeScreen(
-            viewModel = viewModel,
-            onNavigateToBotScreen = navController::navigateToBotScreen,
-            onNavigateToRecipientsScreen = navController::navigateToRecipientsScreen,
-            onNavigateToPermissionsScreen = navController::navigateToPermissionsScreen
-        )
-    }
+@Serializable
+data object PermissionsScreenNavKey : NavKey
 
-fun NavGraphBuilder.botScreen(
-    navController: NavHostController,
-) =
-    composable<BotScreenRoute> {
-        val viewModel: HomeViewModel =
-            koinViewModel(viewModelStoreOwner = navController.getBackStackEntry(HomeNavGraphRoute))
-
-        BotScreen(
-            viewModel = viewModel,
-            onBackClick = navController::popBackStack
-        )
-    }
-
-fun NavGraphBuilder.recipientsScreen(
-    navController: NavHostController,
-) =
-    composable<RecipientsScreenRoute> {
-        val viewModel: HomeViewModel =
-            koinViewModel(viewModelStoreOwner = navController.getBackStackEntry(HomeNavGraphRoute))
-
-        RecipientsScreen(
-            viewModel = viewModel,
-            onBackClick = navController::popBackStack
-        )
-    }
-
-fun NavGraphBuilder.permissionsScreen(
-    navController: NavHostController,
-) =
-    composable<PermissionsScreenRoute> {
-        PermissionsScreen(onBackClick = navController::popBackStack)
-    }
+@Composable
+fun EntryProviderBuilder<NavKey>.PermissionsScreenNavEntry(
+    onBackClick: () -> Unit
+) = entry(PermissionsScreenNavKey) {
+    PermissionsScreen(
+        onBackClick = onBackClick
+    )
+}
