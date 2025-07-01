@@ -1,4 +1,4 @@
-package ag.sokolov.telepager.feature.home
+package ag.sokolov.telepager.feature.home.screens.permissions
 
 import ag.sokolov.telepager.core.designsystem.component.TelepagerScreenTitle
 import ag.sokolov.telepager.core.designsystem.theme.TelepagerTheme
